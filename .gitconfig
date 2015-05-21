@@ -1,0 +1,31 @@
+[alias]
+        st = status
+        ci = commit
+        co = checkout
+[color]
+        ui = always
+[core]
+        editor = vim
+[user]
+        name = Fred Campos
+        email = mail2frede@gmail.com
+[github]
+        user = fredcamps
+[color "branch"]
+        current = yellow bold
+        local = green bold
+        remote = cyan bold
+[color "diff"]
+        meta = yellow bold
+        frag = magenta bold
+        old = red bold
+        new = green bold
+        whitespace = red reverse
+[color "status"]
+        added = green bold
+        changed = yellow bold
+        untracked = red bold
+[push]
+        default = current
+
+
