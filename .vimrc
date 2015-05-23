@@ -90,7 +90,6 @@ set statusline+=\ %h                                    " help flag '[Help]'
 set statusline+=\ %{GitBranchInfoString()}
 set statusline+=\ %{strftime(\"%Y-%m-%d\ %H:%M\")}
 
-
 let g:git_branch_status_nogit=""
 
 " NerdTree
@@ -141,6 +140,3 @@ augroup phpSyntaxOverride
   autocmd!
   autocmd FileType php call PhpSyntaxOverride()
 augroup END
-
-
-
