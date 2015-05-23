@@ -7,7 +7,7 @@
 USER_NAME="$(whoami)"
 HOME_PATH="/home/${USER_NAME}"
 
-SHELL_RC_FILE="${HOME_PATH}/.zshrc"
+SHELL_PROFILE_FILE="${HOME_PATH}/.zsh_profile"
 
 VAGRANT_VERSION="1.7.2"
 KERNEL="$(uname -s)"
@@ -20,10 +20,6 @@ PHP_VARIANTS="+default +fpm +phpdbg"
 PHP_PATH="${HOME_PATH}/.phpbrew/php/php-${PHP_VERSION}"
 
 TIMEZONE="America/Sao_Paulo"
-
-ZSH_PLUGINS="git gitfast git-extras encode64 command-not-found autojump celery composer compleat pip"
-ZSH_PLUGINS="${ZSH_PLUGINS} dirhistory vagrant docker supervisor last-working-dir virtualenvwrapper"
-ZSH_THEME="aussiegeek"
 
 # utils
 echo "<< installing some utilities and deps"
@@ -42,7 +38,8 @@ sudo apt-get install -y aptitude  \
     ttf-mscorefonts-installer \
     meld \
     libreoffice \
-    terminator \
+    #terminator \
+    tmux \
     firefox \
     subversion \
     midori \
@@ -69,27 +66,23 @@ sudo apt-get install -y sqlite3 \
     mongodb-clients 2> /dev/null
 echo "<< installing db clients [end]"
 
+source "${SHELL_PROFILE_FILE}"
+
 # shell
 echo "<< installing zsh & shell tools"
-if [ ! -f "$(which shellcheck)" ] || [ ! -f "$(which zsh)" ]; then
+if [ ! -d "${HOME_PATH}/.oh-my-zsh" ] || [ ! -f "$(which shellcheck)" ] || [ ! -f "$(which zsh)" ]; then
+    cp -v "$(pwd)/.oh-my-zsh" "${HOME_PATH}/.oh-my-zsh"
     sudo apt-get install -y zsh shellcheck 2> /dev/null
-    if [ ! -d "${HOME_PATH}/.oh-my-zsh" ]; then
-        git clone https://github.com/robbyrussell/oh-my-zsh.git "${HOME_PATH}/.oh-my-zsh"
-    fi
     echo "<< changing shell, maybe it will ask password"
     chsh -s /bin/zsh
 fi
-cat "${HOME_PATH}/.oh-my-zsh/templates/zshrc.zsh-template" > "${SHELL_RC_FILE}"
-sed -i 's/^ZSH_THEME.*/'"ZSH_THEME=\"${ZSH_THEME}\"/g" "${SHELL_RC_FILE}"
-sed -i 's/^plugins.*/'"plugins=(${ZSH_PLUGINS})/g" "${SHELL_RC_FILE}"
-cat "${PWD}/shell.zshrc" >> "${SHELL_RC_FILE}"
 echo "<< installing zsh & shell tools [end]"
 
 # atom
 if [ ! -f "$(which atom)" ]; then
     echo "<< installing atom editor & plugins"
     sudo add-apt-repository ppa:webupd8team/atom
-    sudo apt-get update
+    sudo apt-get update 2> /dev/null
     sudo apt-get install -y atom 2> /dev/null
     if [ ! -f "$(which apm)" ]; then
         echo "<< [error] apm not found"
@@ -124,7 +117,7 @@ if [ ! -f "$(which atom)" ]; then
 fi
 
 # google-chrome
-if [ ! -f "$(which google-chrome)" ]; then
+if [ ! -f "$(command which google-chrome)" ]; then
     echo "<< installing google chrome"
     wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
     sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
@@ -135,15 +128,10 @@ fi
 
 # node
 echo "<< installing nodejs"
-if [ ! -f "$(which nvm)" ]; then
+if [ ! -f "$(command which nvm)" ]; then
     curl "https://raw.githubusercontent.com/creationix/nvm/${NVM_VERSION}/install.sh" | sh
 fi
-{
-    echo -e "export NVM_DIR=\"${HOME_PATH}/.nvm\""
-    echo -e "[ -s \"\$NVM_DIR/nvm.sh\" ] && . \"\$NVM_DIR/nvm.sh\""
-} >> "${SHELL_RC_FILE}"
-if [ ! -f "$(which npm)" ] || [ ! -f "$(which jshint)" ]; then
-    source "${SHELL_RC_FILE}"
+if [ ! -f "$(command which jshint)" ]; then
     nvm install "${NODE_VERSION}"
     nvm use "${NODE_VERSION}"
     curl https://npmjs.org/install.sh | sh
@@ -162,24 +150,16 @@ echo "<< installing python & tools"
 sudo apt-get install -y python-dev python-pip 2> /dev/null
 sudo pip install --upgrade pip 2> /dev/null
 sudo pip install flake8 jedi autopep8 virtualenvwrapper supervisor 2> /dev/null
-{
-    echo ""
-    echo -e "export PYENV_ROOT=\"\$HOME/.pyenv\""
-    echo -e "export PATH=\"\$PYENV_ROOT/bin:\$PATH\""
-    echo -e "eval \"\$(pyenv init -)\""
-    echo ""
-} >> "${SHELL_RC_FILE}"
 if [ ! -d "${HOME_PATH}/.pyenv" ]; then
     curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
 fi
-source "${SHELL_RC_FILE}"
 pyenv update
 echo "<< installing python & tools [end]"
 
 #ruby
 echo "<< installing ruby"
 sudo apt-get install -y ruby ruby-dev rubygems-integration ruby-bundler 2> /dev/null
-sudo gem install rubocop 2> /dev/null
+sudo gem install rubocop tmuxinator 2> /dev/null
 echo "<< installing ruby [end]"
 
 #go
@@ -191,13 +171,12 @@ echo "<< installing goLang [end]"
 #php
 echo "<< installing php & tools"
 sudo apt-get install -y php5-cli php5-dev 2> /dev/null
-# echo -e "source \"\${HOME}/.phpbrew/bashrc\"" >> "${SHELL_RC_FILE}"
 if [ ! -d "${HOME_PATH}/.phpbrew" ]; then
     sudo wget -O /usr/local/bin/phpbrew https://github.com/phpbrew/phpbrew/raw/master/phpbrew
     sudo chmod +x /usr/local/bin/phpbrew
     phpbrew init
     phpbrew update
-    sed -i 's/BIN=$(which phpbrew)/BIN=$(command -p which phpbrew)/g' "${HOME_PATH}/.phpbrew/bashrc"
+    sed -i "s/BIN=$(which phpbrew)/BIN=$(command -p which phpbrew)/g" "${HOME_PATH}/.phpbrew/bashrc"
     phpbrew install "${PHP_VERSION}" "${PHP_VARIANTS}"
     source "${HOME_PATH}/.phpbrew/bashrc"
     phpbrew switch "php-${PHP_VERSION}"
@@ -209,8 +188,6 @@ if [ ! -d "${HOME_PATH}/.phpbrew" ]; then
         echo "date.timezone=\"${TIMEZONE}\""
     } >> "${PHP_PATH}/etc/php.ini"
     sed -i 's/^listen = 127.0.0.1:9000/listen = 127.0.0.1:9007/g' "${PHP_PATH}/etc/php-fpm.conf"
-    #sed -i 's/^user = nobody/user = www-data/g' "${PHP_PATH}/etc/php-fpm.conf"
-    #sed -i 's/^group = nobody/group = www-data/g' "${PHP_PATH}/etc/php-fpm.conf"
     phpbrew fpm restart
     sudo gpasswd -a "${USER_NAME}" www-data
 fi

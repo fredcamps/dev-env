@@ -1,23 +1,31 @@
-install:
+setup:
 		./setup.sh
-		@mkdir -p .vim/bundle
-		@git submodule update --init
-		@cp .gitconfig ~/.gitconfig
-		@cp .atom/config.cson ~/.atom/config.cson
-		@cp .atom/keymap.cson ~/.atom/keymap.cson
-		@cp -r .config/* ~/.config
-		@cp -r .fonts/* ~/.fonts
-		@cp -r .ssh/* ~/.ssh
-		@cp -r .vim/* ~/.vim
-		@cp .vimrc ~/.vimrc
+load:
+		@test -e $(command which git) || sudo apt-get install git -y 2> /dev/null ;
+		@git submodule update 
+		@cp  .atom/config.cson ~/.atom/config.cson
+		@cp  .atom/keymap.cson ~/.atom/keymap.cson
+		@cp -R .fonts ~/
+		@cp -R .ssh ~/
+		@cp -R .zgen ~/
+		@cp -R .vim ~/
+		@cp  .vimrc ~/.vimrc
+		@cp  .gitconfig ~/.gitconfig
+		@cp  .zsh_profile ~/.zsh_profile
+		@cp  .zsh_aliases ~/.zsh_aliases
+		@cp  .zshrc ~/.zshrc
 		@vim +NeoBundleInstall +qall
 
-self-update:
-		@cp ~/.gitconfig .gitconfig
-		@cp ~/.atom/config.cson .atom/config.cson
-		@cp ~/.atom/keymap.cson .atom/keymap.cson
-		@cp -r ~/.config/terminator .config
-		@cp -r ~/.fonts/* .fonts
-		@cp -r ~/.ssh/config .ssh
-		@cp -r ~/.vim/* .vim
-		@cp ~/.vimrc .vimrc
+save:
+		@cp  ~/.atom/config.cson .atom/config.cson
+		@cp  ~/.atom/keymap.cson .atom/keymap.cson
+		@cp -R ~/.fonts/* .fonts
+		@cp -R ~/.ssh/config .ssh
+		@cp -R ~/.zgen/* .zgen
+		@cp -R ~/.vim/* .vim
+		@cp  ~/.vimrc .vimrc
+		@cp  ~/.gitconfig .gitconfig
+		@cp  ~/.zsh_profile .zsh_profile
+		@cp  ~/.zsh_aliases .zsh_aliases
+		@cp  ~/.zshrc .zshrc
+		@vim +NeoBundleInstall +qall

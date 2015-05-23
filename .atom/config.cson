@@ -6,7 +6,6 @@
   core:
     disabledPackages: [
       "metrics"
-      "autocomplete"
       "emmet"
     ]
   editor:
@@ -22,7 +21,7 @@
     softTabs: false
   linter:
     showInfoMessages: true
-    statusBar: "Show all errors"
+    statusBar: "Show error of the selected line"
     showErrorInline: false
   "linter-flake8":
     binaryName: "/usr/local/bin/flake8"

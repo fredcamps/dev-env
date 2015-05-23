@@ -1,5 +1,5 @@
 " My Default Settings
-syntax on
+syntax enable
 set nocp
 set encoding=utf-8
 set smarttab
@@ -50,15 +50,20 @@ call neobundle#begin(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 
 " To install vim +NeoBundleInstall +qall
-NeoBundleFetch 'vim-scripts/ctags.vim'
-NeoBundleFetch 'scrooloose/nerdtree'
-NeoBundleFetch 'vim-scripts/po.vim'
-NeoBundleFetch 'StanAngeloff/php.vim'
-NeoBundleFetch 'hdima/python-syntax'
-NeoBundleFetch 'joonty/vim-phpqa.git'
-NeoBundleFetch 'nvie/vim-flake8'
+NeoBundle 'vim-scripts/ctags.vim'
+NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'vim-scripts/po.vim'
+NeoBundle 'StanAngeloff/php.vim'
+NeoBundle 'hdima/python-syntax'
+NeoBundle 'joonty/vim-phpqa.git'
+NeoBundle 'nvie/vim-flake8'
+NeoBundle 'vim-scripts/Git-Branch-Info'
 
 call neobundle#end()
+
+" If there are uninstalled bundles found on startup,
+"  " this will conveniently prompt you to install them.
+NeoBundleCheck
 
 " Required for NeoBundle
 filetype plugin indent on
@@ -82,12 +87,14 @@ set statusline+=]
 set statusline+=\ %r                                    " read only flag '[RO]'
 set statusline+=\ %2*%m%*                               " modified flag '[+]' if modifiable
 set statusline+=\ %h                                    " help flag '[Help]'
-
+set statusline+=\ %{GitBranchInfoString()}
 set statusline+=\ %{strftime(\"%Y-%m-%d\ %H:%M\")}
 
 
+let g:git_branch_status_nogit=""
+
 " NerdTree
-let g:NERDTreeWinPos = "right"
+let g:NERDTreeWinPos = "left"
 imap <F12> <ESC> :NERDTreeToggle <CR> i
 map <F12> :NERDTreeToggle <CR>
 vmap <F12> <ESC> :NERDTreeToggle <CR> v
