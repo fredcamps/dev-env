@@ -2,9 +2,8 @@ setup:
 		./setup.sh
 load:
 		@test -e $(command which git) || sudo apt-get install git -y 2> /dev/null ;
-		@git submodule update 
-		@cp  .atom/config.cson ~/.atom/config.cson
-		@cp  .atom/keymap.cson ~/.atom/keymap.cson
+		@git submodule update --init && gitsubmodule update
+		@cp -R .atom ~/
 		@cp -R .fonts ~/
 		@cp -R .ssh ~/
 		@cp -R .zgen ~/
