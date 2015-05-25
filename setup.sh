@@ -60,7 +60,6 @@ echo "<< installing some utilities and deps  [end]"
 # db clients
 echo "<< installing db clients"
 sudo apt-get install -y sqlite3 \
-    mysql-client-5.6 \
     postgresql-client \
     redis-tools \
     mongodb-clients 2> /dev/null
@@ -70,20 +69,20 @@ source "${SHELL_PROFILE_FILE}"
 
 # shell
 echo "<< installing zsh & shell tools"
-if [ ! -d "${HOME_PATH}/.oh-my-zsh" ] || [ ! -f "$(which shellcheck)" ] || [ ! -f "$(which zsh)" ]; then
-    cp -v "$(pwd)/.oh-my-zsh" "${HOME_PATH}/.oh-my-zsh"
+if [ ! -f "$(which zsh)" ]; then
     sudo apt-get install -y zsh shellcheck 2> /dev/null
     echo "<< changing shell, maybe it will ask password"
     chsh -s /bin/zsh
+    /bin/zsh
 fi
 echo "<< installing zsh & shell tools [end]"
 
 # atom
 if [ ! -f "$(which atom)" ]; then
     echo "<< installing atom editor & plugins"
-    sudo add-apt-repository ppa:webupd8team/atom
-    sudo apt-get update 2> /dev/null
-    sudo apt-get install -y atom 2> /dev/null
+    wget -O /tmp/atom.deb https://atom.io/download/deb
+    sudo dpkg -i /tmp/atom.deb 2> /dev/null
+    sudo apt-get -y -f install 2> /dev/null
     if [ ! -f "$(which apm)" ]; then
         echo "<< [error] apm not found"
         exit 0
@@ -92,7 +91,6 @@ if [ ! -f "$(which atom)" ]; then
     minimap \
     script \
     atom-beautify \
-    autocomplete-plus \
     autocomplete-php \
     autocomplete-plus-python-jedi \
     autocomplete-paths \
@@ -169,53 +167,63 @@ sudo go get -u github.com/golang/lint/golint 2> /dev/null
 echo "<< installing goLang [end]"
 
 #php
-echo "<< installing php & tools"
-sudo apt-get install -y php5-cli php5-dev 2> /dev/null
-if [ ! -d "${HOME_PATH}/.phpbrew" ]; then
-    sudo wget -O /usr/local/bin/phpbrew https://github.com/phpbrew/phpbrew/raw/master/phpbrew
-    sudo chmod +x /usr/local/bin/phpbrew
-    phpbrew init
-    phpbrew update
-    sed -i "s/BIN=$(which phpbrew)/BIN=$(command -p which phpbrew)/g" "${HOME_PATH}/.phpbrew/bashrc"
-    phpbrew install "${PHP_VERSION}" "${PHP_VARIANTS}"
-    source "${HOME_PATH}/.phpbrew/bashrc"
-    phpbrew switch "php-${PHP_VERSION}"
-    sed -i 's/^\[Date\].*//g' "${PHP_PATH}/etc/php.ini"
-    sed -i 's/^date.*//g' "${PHP_PATH}/etc/php.ini"
-    {
-        echo ""
-        echo "[Date]"
-        echo "date.timezone=\"${TIMEZONE}\""
-    } >> "${PHP_PATH}/etc/php.ini"
-    sed -i 's/^listen = 127.0.0.1:9000/listen = 127.0.0.1:9007/g' "${PHP_PATH}/etc/php-fpm.conf"
-    phpbrew fpm restart
-    sudo gpasswd -a "${USER_NAME}" www-data
+#echo "<< installing php & tools"
+#sudo apt-get install -y php5-cli php5-dev 2> /dev/null
+#if [ ! -d "${HOME_PATH}/.phpbrew" ]; then
+#    sudo wget -O /usr/local/bin/phpbrew https://github.com/phpbrew/phpbrew/raw/master/phpbrew
+#    sudo chmod +x /usr/local/bin/phpbrew
+#    phpbrew init
+#    phpbrew update
+#    sed -i "s/BIN=$(which phpbrew)/BIN=$(command -p which phpbrew)/g" "${HOME_PATH}/.phpbrew/bashrc"
+#    phpbrew install "${PHP_VERSION}" "${PHP_VARIANTS}"
+#    source "${HOME_PATH}/.phpbrew/bashrc"
+#    phpbrew switch "php-${PHP_VERSION}"
+#    sed -i 's/^\[Date\].*//g' "${PHP_PATH}/etc/php.ini"
+#    sed -i 's/^date.*//g' "${PHP_PATH}/etc/php.ini"
+#    {
+#        echo ""
+#        echo "[Date]"
+#        echo "date.timezone=\"${TIMEZONE}\""
+#    } >> "${PHP_PATH}/etc/php.ini"
+#    sed -i 's/^listen = 127.0.0.1:9000/listen = 127.0.0.1:9007/g' "${PHP_PATH}/etc/php-fpm.conf"
+#    phpbrew fpm restart
+#    sudo gpasswd -a "${USER_NAME}" www-data
+#fi
+#if [ ! -f /usr/local/bin/composer ]; then
+#    curl -sS https://getcomposer.org/installer | php
+#    chmod +x "${PWD}/composer.phar" ; sudo mv "${PWD}/composer.phar" /usr/local/bin/composer
+#fi
+#if [ ! -f /usr/local/bin/phpcs ]; then
+#    sudo wget -O /usr/local/bin/phpcs https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
+#    sudo chmod +x /usr/local/bin/phpcs
+#fi
+#if [ ! -f /usr/local/bin/phpcbf ]; then
+#    sudo wget -O /usr/local/bin/phpcbf https://squizlabs.github.io/PHP_CodeSniffer/phpcbf.phar
+#    sudo chmod +x /usr/local/bin/phpcbf
+#fi
+#if [ ! -f /usr/local/bin/php-cs-fixer ]; then
+#    sudo wget -O /usr/local/bin/php-cs-fixer http://get.sensiolabs.org/php-cs-fixer.phar
+#    sudo chmod +x /usr/local/bin/php-cs-fixer
+#fi
+#if [ ! -f /usr/local/bin/phpmd ]; then
+#    sudo wget -O /usr/local/bin/phpmd http://static.phpmd.org/php/latest/phpmd.phar
+#    sudo chmod +x /usr/local/bin/phpmd
+#fi
+#if [ ! -f /usr/local/bin/phpdox ]; then
+#    sudo wget -O /usr/local/bin/phpdox http://phpdox.de/releases/phpdox.phar
+#    chmod +x /usr/local/bin/phpdox
+#fi
+#echo "<< installing php & tools [end]"
+
+# docker
+if [ ! -f "$(which docker)" ]; then
+    echo "<< installing docker"
+    sudo curl -sSL https://get.docker.com/ | sh
+    sudo su -c "curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VER}/docker-compose-${KERNEL}-${ARCH} > /usr/local/bin/docker-compose"
+    sudo chmod +x /usr/local/bin/docker-compose
+    sudo gpasswd -a "${USER_NAME}" docker
+    echo "<< installing docker [end]"
 fi
-if [ ! -f /usr/local/bin/composer ]; then
-    curl -sS https://getcomposer.org/installer | php
-    chmod +x "${PWD}/composer.phar" ; sudo mv "${PWD}/composer.phar" /usr/local/bin/composer
-fi
-if [ ! -f /usr/local/bin/phpcs ]; then
-    sudo wget -O /usr/local/bin/phpcs https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
-    sudo chmod +x /usr/local/bin/phpcs
-fi
-if [ ! -f /usr/local/bin/phpcbf ]; then
-    sudo wget -O /usr/local/bin/phpcbf https://squizlabs.github.io/PHP_CodeSniffer/phpcbf.phar
-    sudo chmod +x /usr/local/bin/phpcbf
-fi
-if [ ! -f /usr/local/bin/php-cs-fixer ]; then
-    sudo wget -O /usr/local/bin/php-cs-fixer http://get.sensiolabs.org/php-cs-fixer.phar
-    sudo chmod +x /usr/local/bin/php-cs-fixer
-fi
-if [ ! -f /usr/local/bin/phpmd ]; then
-    sudo wget -O /usr/local/bin/phpmd http://static.phpmd.org/php/latest/phpmd.phar
-    sudo chmod +x /usr/local/bin/phpmd
-fi
-if [ ! -f /usr/local/bin/phpdox ]; then
-    sudo wget -O /usr/local/bin/phpdox http://phpdox.de/releases/phpdox.phar
-    chmod +x /usr/local/bin/phpdox
-fi
-echo "<< installing php & tools [end]"
 
 # vagrant
 if [ ! -f "$(which vagrant)" ]; then
@@ -226,16 +234,6 @@ if [ ! -f "$(which vagrant)" ]; then
         sudo apt-get install -y -f 2> /dev/null
     }
     echo "<< installing vagrant & virtualbox [end]"
-fi
-
-# docker
-if [ ! -f "$(which docker)" ]; then
-    echo "<< installing docker"
-    sudo curl -sSL https://get.docker.com/ | sh
-    sudo su -c "curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VER}/docker-compose-${KERNEL}-${ARCH} > /usr/local/bin/docker-compose"
-    sudo chmod +x /usr/local/bin/docker-compose
-    sudo gpasswd -a "${USER_NAME}" docker
-    echo "<< installing docker [end]"
 fi
 
 echo "<< cleaning and removing old packages "

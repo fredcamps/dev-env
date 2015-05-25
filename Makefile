@@ -2,7 +2,7 @@ setup:
 		./setup.sh
 load:
 		@test -e $(command which git) || sudo apt-get install git -y 2> /dev/null ;
-		@git submodule update --init && gitsubmodule update
+		@git submodule update --init && git submodule update
 		@cp -R .atom ~/
 		@cp -R .fonts ~/
 		@cp -R .ssh ~/
