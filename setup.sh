@@ -194,7 +194,6 @@ if [ ! -f "$(which atom)" ]; then
     autocomplete-php \
     autocomplete-plus-python-jedi \
     autocomplete-paths \
-    autocomplete-plus-snippets \
     docblockr \
     emmet \
     language-docker \
