@@ -6,6 +6,7 @@
 # [ -e "${HOME}/.zsh_profile" ] && source "${HOME}/.zsh_profile"
 source "${HOME}/.zsh_aliases"
 source "${HOME}/.zsh_profile"
+source "${HOME}/.zsh_inputrc"
 
 source "${HOME}/.zgen/zgen.zsh"
 
@@ -17,8 +18,10 @@ if ! zgen saved; then
     zgen load tarruda/zsh-autosuggestions
     zgen load chrissicool/zsh-256color
     zgen load marzocchi/zsh-notify
-    zgen load voronkovich/mysql.plugin.zsh
+    #zgen load voronkovich/mysql.plugin.zsh
+    zgen load rupa/z/z
 
+    zgen oh-my-zsh plugins/urltools
     zgen oh-my-zsh plugins/redis-cli
     zgen oh-my-zsh plugins/git
     zgen oh-my-zsh plugins/gitfast
@@ -35,7 +38,6 @@ if ! zgen saved; then
     zgen oh-my-zsh plugins/fabric
     zgen oh-my-zsh plugins/tmuxinator
     zgen oh-my-zsh plugins/ssh-agent
-    zgen oh-my-zsh plugins/z
     zgen oh-my-zsh plugins/yii
     zgen oh-my-zsh plugins/django
     zgen oh-my-zsh plugins/bundler
