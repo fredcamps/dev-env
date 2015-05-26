@@ -57,6 +57,16 @@ sudo apt-get install -y aptitude  \
     re2c 2> /dev/null
 echo "<< installing some utilities and deps  [end]"
 
+# google-chrome
+if [ ! -f "$(command which google-chrome)" ]; then
+    echo "<< installing google chrome"
+    wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+    sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+    sudo apt-get update 2> /dev/null
+    sudo apt-get install -y google-chrome-stable 2> /dev/null
+    echo "<< installing google chrome [end]"
+fi
+
 # db clients
 echo "<< installing db clients"
 sudo apt-get install -y sqlite3 \
@@ -64,8 +74,6 @@ sudo apt-get install -y sqlite3 \
     redis-tools \
     mongodb-clients 2> /dev/null
 echo "<< installing db clients [end]"
-
-source "${SHELL_PROFILE_FILE}"
 
 # shell
 echo "<< installing zsh & shell tools"
@@ -77,55 +85,9 @@ if [ ! -f "$(which zsh)" ]; then
 fi
 echo "<< installing zsh & shell tools [end]"
 
-# atom
-if [ ! -f "$(which atom)" ]; then
-    echo "<< installing atom editor & plugins"
-    wget -O /tmp/atom.deb https://atom.io/download/deb
-    sudo dpkg -i /tmp/atom.deb 2> /dev/null
-    sudo apt-get -y -f install 2> /dev/null
-    if [ ! -f "$(which apm)" ]; then
-        echo "<< [error] apm not found"
-        exit 0
-    fi
-    apm install term2 \
-    minimap \
-    script \
-    atom-beautify \
-    autocomplete-php \
-    autocomplete-plus-python-jedi \
-    autocomplete-paths \
-    autocomplete-plus-snippets \
-    docblockr \
-    emmet \
-    language-docker \
-    linter \
-    linter-clang \
-    linter-flake8 \
-    linter-jshint \
-    linter-php \
-    linter-phpcs \
-    linter-phpmd \
-    linter-ruby \
-    linter-rubocop \
-    linter-shellcheck \
-    linter-golint \
-    symbol-gen \
-    language-x86asm
-    echo "<< installing atom editor & plugins [end]"
-fi
-
-# google-chrome
-if [ ! -f "$(command which google-chrome)" ]; then
-    echo "<< installing google chrome"
-    wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-    sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-    sudo apt-get update 2> /dev/null
-    sudo apt-get install -y google-chrome-stable 2> /dev/null
-    echo "<< installing google chrome [end]"
-fi
-
 # node
 echo "<< installing nodejs"
+source "${SHELL_PROFILE_FILE}"
 if [ ! -f "$(command which nvm)" ]; then
     curl "https://raw.githubusercontent.com/creationix/nvm/${NVM_VERSION}/install.sh" | sh
 fi
@@ -138,11 +100,6 @@ if [ ! -f "$(command which jshint)" ]; then
 fi
 echo "<< installing nodejs [end]"
 
-# c/cpp
-echo "<< installing clang"
-sudo apt-get install -y clang uncrustify 2> /dev/null
-echo "<< installing clang [end]"
-
 # python
 echo "<< installing python & tools"
 sudo apt-get install -y python-dev python-pip 2> /dev/null
@@ -153,6 +110,11 @@ if [ ! -d "${HOME_PATH}/.pyenv" ]; then
 fi
 pyenv update
 echo "<< installing python & tools [end]"
+
+# c/cpp
+echo "<< installing clang"
+sudo apt-get install -y clang uncrustify 2> /dev/null
+echo "<< installing clang [end]"
 
 #ruby
 echo "<< installing ruby"
@@ -214,6 +176,43 @@ echo "<< installing goLang [end]"
 #    chmod +x /usr/local/bin/phpdox
 #fi
 #echo "<< installing php & tools [end]"
+
+# atom
+if [ ! -f "$(which atom)" ]; then
+    echo "<< installing atom editor & plugins"
+    wget -O /tmp/atom.deb https://atom.io/download/deb
+    sudo dpkg -i /tmp/atom.deb 2> /dev/null
+    sudo apt-get -y -f install 2> /dev/null
+    if [ ! -f "$(which apm)" ]; then
+        echo "<< [error] apm not found"
+        exit 0
+    fi
+    apm install term2 \
+    minimap \
+    script \
+    atom-beautify \
+    autocomplete-php \
+    autocomplete-plus-python-jedi \
+    autocomplete-paths \
+    autocomplete-plus-snippets \
+    docblockr \
+    emmet \
+    language-docker \
+    linter \
+    linter-clang \
+    linter-flake8 \
+    linter-jshint \
+    linter-php \
+    linter-phpcs \
+    linter-phpmd \
+    linter-ruby \
+    linter-rubocop \
+    linter-shellcheck \
+    linter-golint \
+    symbol-gen \
+    language-x86asm
+    echo "<< installing atom editor & plugins [end]"
+fi
 
 # docker
 if [ ! -f "$(which docker)" ]; then
