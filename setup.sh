@@ -77,7 +77,7 @@ echo "<< installing db clients [end]"
 
 # shell
 echo "<< installing zsh & shell tools"
-if [ ! -f "$(which zsh)" ]; then
+if [ ! -f "$(command which zsh)" ]; then
     sudo apt-get install -y zsh shellcheck 2> /dev/null
     echo "<< changing shell, maybe it will ask password"
     chsh -s /bin/zsh
@@ -129,8 +129,8 @@ sudo go get -u github.com/golang/lint/golint 2> /dev/null
 echo "<< installing goLang [end]"
 
 #php
-#echo "<< installing php & tools"
-#sudo apt-get install -y php5-cli php5-dev 2> /dev/null
+echo "<< installing php & tools"
+sudo apt-get install -y php5-cli php5-dev php5-curl php5-initl 2> /dev/null
 #if [ ! -d "${HOME_PATH}/.phpbrew" ]; then
 #    sudo wget -O /usr/local/bin/phpbrew https://github.com/phpbrew/phpbrew/raw/master/phpbrew
 #    sudo chmod +x /usr/local/bin/phpbrew
@@ -151,31 +151,31 @@ echo "<< installing goLang [end]"
 #    phpbrew fpm restart
 #    sudo gpasswd -a "${USER_NAME}" www-data
 #fi
-#if [ ! -f /usr/local/bin/composer ]; then
-#    curl -sS https://getcomposer.org/installer | php
-#    chmod +x "${PWD}/composer.phar" ; sudo mv "${PWD}/composer.phar" /usr/local/bin/composer
-#fi
-#if [ ! -f /usr/local/bin/phpcs ]; then
-#    sudo wget -O /usr/local/bin/phpcs https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
-#    sudo chmod +x /usr/local/bin/phpcs
-#fi
-#if [ ! -f /usr/local/bin/phpcbf ]; then
-#    sudo wget -O /usr/local/bin/phpcbf https://squizlabs.github.io/PHP_CodeSniffer/phpcbf.phar
-#    sudo chmod +x /usr/local/bin/phpcbf
-#fi
-#if [ ! -f /usr/local/bin/php-cs-fixer ]; then
-#    sudo wget -O /usr/local/bin/php-cs-fixer http://get.sensiolabs.org/php-cs-fixer.phar
-#    sudo chmod +x /usr/local/bin/php-cs-fixer
-#fi
-#if [ ! -f /usr/local/bin/phpmd ]; then
-#    sudo wget -O /usr/local/bin/phpmd http://static.phpmd.org/php/latest/phpmd.phar
-#    sudo chmod +x /usr/local/bin/phpmd
-#fi
-#if [ ! -f /usr/local/bin/phpdox ]; then
-#    sudo wget -O /usr/local/bin/phpdox http://phpdox.de/releases/phpdox.phar
-#    chmod +x /usr/local/bin/phpdox
-#fi
-#echo "<< installing php & tools [end]"
+if [ ! -f /usr/local/bin/composer ]; then
+    curl -sS https://getcomposer.org/installer | php
+    chmod +x "${PWD}/composer.phar" ; sudo mv "${PWD}/composer.phar" /usr/local/bin/composer
+fi
+if [ ! -f /usr/local/bin/phpcs ]; then
+    sudo wget -O /usr/local/bin/phpcs https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
+    sudo chmod +x /usr/local/bin/phpcs
+fi
+if [ ! -f /usr/local/bin/phpcbf ]; then
+    sudo wget -O /usr/local/bin/phpcbf https://squizlabs.github.io/PHP_CodeSniffer/phpcbf.phar
+    sudo chmod +x /usr/local/bin/phpcbf
+fi
+if [ ! -f /usr/local/bin/php-cs-fixer ]; then
+    sudo wget -O /usr/local/bin/php-cs-fixer http://get.sensiolabs.org/php-cs-fixer.phar
+    sudo chmod +x /usr/local/bin/php-cs-fixer
+fi
+if [ ! -f /usr/local/bin/phpmd ]; then
+    sudo wget -O /usr/local/bin/phpmd http://static.phpmd.org/php/latest/phpmd.phar
+    sudo chmod +x /usr/local/bin/phpmd
+fi
+if [ ! -f /usr/local/bin/phpdox ]; then
+    sudo wget -O /usr/local/bin/phpdox http://phpdox.de/releases/phpdox.phar
+    chmod +x /usr/local/bin/phpdox
+fi
+echo "<< installing php & tools [end]"
 
 # atom
 if [ ! -f "$(which atom)" ]; then

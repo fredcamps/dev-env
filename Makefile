@@ -13,6 +13,7 @@ load:
 		@cp  .zsh_profile ~/.zsh_profile
 		@cp  .zsh_aliases ~/.zsh_aliases
 		@cp  .zshrc ~/.zshrc
+		@cp  .zsh_inputrc ~/.zsh_inputrc
 		@vim +NeoBundleInstall +qall
 
 save:
@@ -27,4 +28,5 @@ save:
 		@cp  ~/.zsh_profile .zsh_profile
 		@cp  ~/.zsh_aliases .zsh_aliases
 		@cp  ~/.zshrc .zshrc
+		@cp  ~/.zsh_inputrc .zsh_inputrc
 		@vim +NeoBundleInstall +qall

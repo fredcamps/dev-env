@@ -18,9 +18,9 @@ if ! zgen saved; then
     zgen load tarruda/zsh-autosuggestions
     zgen load chrissicool/zsh-256color
     zgen load marzocchi/zsh-notify
-    #zgen load voronkovich/mysql.plugin.zsh
-    zgen load rupa/z/z
+    zgen load voronkovich/mysql.plugin.zsh
 
+    zgen oh-my-zsh plugins/z
     zgen oh-my-zsh plugins/urltools
     zgen oh-my-zsh plugins/redis-cli
     zgen oh-my-zsh plugins/git
