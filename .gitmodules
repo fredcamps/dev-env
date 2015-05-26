@@ -3,4 +3,4 @@
 	url = git://github.com/Shougo/neobundle.vim
 [submodule ".zgen"]
 	path = .zgen
-	url = git@github.com:tarjoilija/zgen.git
+	url = git://github.com/tarjoilija/zgen.git
