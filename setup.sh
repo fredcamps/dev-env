@@ -23,7 +23,7 @@ TIMEZONE="America/Sao_Paulo"
 
 # utils
 echo "<< installing some utilities and deps"
-sudo apt-get update 2> /dev/null
+sudo apt-get update 
 sudo apt-get install -y aptitude  \
     bison \
     autoconf \
@@ -38,9 +38,7 @@ sudo apt-get install -y aptitude  \
     ttf-mscorefonts-installer \
     meld \
     libreoffice \
-    #terminator \
     tmux \
-    firefox \
     subversion \
     midori \
     python-software-properties \
@@ -54,7 +52,7 @@ sudo apt-get install -y aptitude  \
     libxslt1-dev \
     libicu-dev \
     libstdc++6-4.7-dev \
-    re2c 2> /dev/null
+    re2c 
 echo "<< installing some utilities and deps  [end]"
 
 # google-chrome
@@ -62,8 +60,8 @@ if [ ! -f "$(command which google-chrome)" ]; then
     echo "<< installing google chrome"
     wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
     sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-    sudo apt-get update 2> /dev/null
-    sudo apt-get install -y google-chrome-stable 2> /dev/null
+    sudo apt-get update 
+    sudo apt-get install -y google-chrome-stable 
     echo "<< installing google chrome [end]"
 fi
 
@@ -72,13 +70,13 @@ echo "<< installing db clients"
 sudo apt-get install -y sqlite3 \
     postgresql-client \
     redis-tools \
-    mongodb-clients 2> /dev/null
+    mongodb-clients 
 echo "<< installing db clients [end]"
 
 # shell
 if [ ! -f "$(command which zsh)" ]; then
     echo "<< installing zsh & shell tools"
-    sudo apt-get install -y zsh shellcheck 2> /dev/null
+    sudo apt-get install -y zsh shellcheck 
     echo "<< changing shell, maybe it will ask password"
     chsh -s /bin/zsh
     /bin/zsh
@@ -96,15 +94,15 @@ if [ ! -f "$(command which jshint)" ]; then
     nvm use "${NODE_VERSION}"
     curl https://npmjs.org/install.sh | sh
     npm config set python /usr/bin/python2 -g
-    npm install -g jshint 2> /dev/null
+    npm install -g jshint 
 fi
 echo "<< installing nodejs [end]"
 
 # python
 echo "<< installing python & tools"
-sudo apt-get install -y python-dev python-pip 2> /dev/null
-sudo pip install --upgrade pip 2> /dev/null
-sudo pip install flake8 jedi autopep8 virtualenvwrapper supervisor 2> /dev/null
+sudo apt-get install -y python-dev python-pip 
+sudo pip install --upgrade pip 
+sudo pip install flake8 jedi autopep8 virtualenvwrapper supervisor 
 if [ ! -d "${HOME_PATH}/.pyenv" ]; then
     curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
 fi
@@ -113,24 +111,24 @@ echo "<< installing python & tools [end]"
 
 # c/cpp
 echo "<< installing clang"
-sudo apt-get install -y clang uncrustify 2> /dev/null
+sudo apt-get install -y clang uncrustify 
 echo "<< installing clang [end]"
 
 #ruby
 echo "<< installing ruby"
-sudo apt-get install -y ruby ruby-dev rubygems-integration ruby-bundler 2> /dev/null
-sudo gem install rubocop tmuxinator 2> /dev/null
+sudo apt-get install -y ruby ruby-dev rubygems-integration  
+sudo gem install rubocop tmuxinator bundler
 echo "<< installing ruby [end]"
 
 #go
 echo "<< installing goLang"
-sudo apt-get install -y golang 2> /dev/null
-sudo go get -u github.com/golang/lint/golint 2> /dev/null
+sudo apt-get install -y golang 
+sudo go get -u github.com/golang/lint/golint 
 echo "<< installing goLang [end]"
 
 #php
 echo "<< installing php & tools"
-sudo apt-get install -y php5-cli php5-dev php5-curl php5-intl 2> /dev/null
+sudo apt-get install -y php5-cli php5-dev php5-curl php5-intl 
 #if [ ! -d "${HOME_PATH}/.phpbrew" ]; then
 #    sudo wget -O /usr/local/bin/phpbrew https://github.com/phpbrew/phpbrew/raw/master/phpbrew
 #    sudo chmod +x /usr/local/bin/phpbrew
@@ -181,8 +179,8 @@ echo "<< installing php & tools [end]"
 if [ ! -f "$(which atom)" ]; then
     echo "<< installing atom editor & plugins"
     wget -O /tmp/atom.deb https://atom.io/download/deb
-    sudo dpkg -i /tmp/atom.deb 2> /dev/null
-    sudo apt-get -y -f install 2> /dev/null
+    sudo dpkg -i /tmp/atom.deb 
+    sudo apt-get -y -f install 
     if [ ! -f "$(which apm)" ]; then
         echo "<< [error] apm not found"
         exit 0
@@ -226,15 +224,15 @@ fi
 # vagrant
 if [ ! -f "$(which vagrant)" ]; then
     echo "<< installing vagrant & virtualbox"
-    sudo apt-get install virtualbox -y 2> /dev/null
+    sudo apt-get install virtualbox -y 
     wget -O "/tmp/vagrant_${VAGRANT_VERSION}_${ARCH}.deb" "https://dl.bintray.com/mitchellh/vagrant/vagrant_${VAGRANT_VERSION}_${ARCH}.deb"
-    sudo dpkg -i "/tmp/vagrant_${VAGRANT_VERSION}_${ARCH}.deb" 2> /dev/null || {
-        sudo apt-get install -y -f 2> /dev/null
+    sudo dpkg -i "/tmp/vagrant_${VAGRANT_VERSION}_${ARCH}.deb" || {
+        sudo apt-get install -y -f 
     }
     echo "<< installing vagrant & virtualbox [end]"
 fi
 
 echo "<< cleaning and removing old packages "
-sudo apt-get autoremove -y 2> /dev/null
-sudo apt-get autoclean -y 2> /dev/null
+sudo apt-get autoremove -y 
+sudo apt-get autoclean -y 
 echo "<< cleaning and removing old packages [end]"
