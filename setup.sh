@@ -76,14 +76,14 @@ sudo apt-get install -y sqlite3 \
 echo "<< installing db clients [end]"
 
 # shell
-echo "<< installing zsh & shell tools"
 if [ ! -f "$(command which zsh)" ]; then
+    echo "<< installing zsh & shell tools"
     sudo apt-get install -y zsh shellcheck 2> /dev/null
     echo "<< changing shell, maybe it will ask password"
     chsh -s /bin/zsh
     /bin/zsh
+    echo "<< installing zsh & shell tools [end]"
 fi
-echo "<< installing zsh & shell tools [end]"
 
 # node
 echo "<< installing nodejs"
@@ -130,7 +130,7 @@ echo "<< installing goLang [end]"
 
 #php
 echo "<< installing php & tools"
-sudo apt-get install -y php5-cli php5-dev php5-curl php5-initl 2> /dev/null
+sudo apt-get install -y php5-cli php5-dev php5-curl php5-intl 2> /dev/null
 #if [ ! -d "${HOME_PATH}/.phpbrew" ]; then
 #    sudo wget -O /usr/local/bin/phpbrew https://github.com/phpbrew/phpbrew/raw/master/phpbrew
 #    sudo chmod +x /usr/local/bin/phpbrew
