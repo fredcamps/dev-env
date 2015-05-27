@@ -83,28 +83,28 @@ if [ ! -f "$(command which zsh)" ]; then
     echo "<< installing zsh & shell tools [end]"
 fi
 
-# python
-echo "<< installing python & tools"
-sudo apt-get install -y python-dev python-pip
-sudo pip install --upgrade pip
-sudo pip install flake8 jedi autopep8 virtualenvwrapper supervisor
-if [ ! -d "${HOME_PATH}/.pyenv" ]; then
-    curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
-fi
-pyenv update
-echo "<< installing python & tools [end]"
-
 # node
 if [ ! -d /opt/node ] || [ ! -f "$(command which npm)" ]; then
     echo "<< installing nodejs"
     wget -O "/tmp/node-v${NODE_VERSION}-linux-x64.tar.gz" "http://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz"
     sudo tar -zxvf "/tmp/node-v${NODE_VERSION}-linux-x64.tar.gz" -C /opt
     sudo mv "/opt/node-v${NODE_VERSION}-linux-x64" /opt/node
-    source "${SHELL_PROFILE_FILE}"
-    sudo npm config set python /usr/bin/python2 -g
-    sudo npm install -g jshint
+    sudo /opt/node/bin/npm config set python /usr/bin/python2 -g
+    sudo /opt/node/bin/npm install -g jshint
     echo "<< installing nodejs [end]"
 fi
+
+# python
+echo "<< installing python & tools"
+sudo apt-get install -y python-dev python-pip
+sudo pip install --upgrade pip
+sudo pip install flake8 jedi autopep8 virtualenvwrapper supervisor
+source "${SHELL_PROFILE_FILE}"
+if [ ! -d "${HOME_PATH}/.pyenv" ]; then
+    curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
+fi
+pyenv update
+echo "<< installing python & tools [end]"
 
 # c/cpp
 echo "<< installing clang"
