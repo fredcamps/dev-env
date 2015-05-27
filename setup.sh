@@ -13,8 +13,7 @@ VAGRANT_VERSION="1.7.2"
 KERNEL="$(uname -s)"
 ARCH="$(uname -m)"
 DOCKER_COMPOSE_VER="1.2.0"
-NVM_VERSION="v0.25.1"
-NODE_VERSION="stable"
+NODE_VERSION="0.12.4"
 PHP_VERSION="5.6.9"
 PHP_VARIANTS="+default +fpm +phpdbg"
 PHP_PATH="${HOME_PATH}/.phpbrew/php/php-${PHP_VERSION}"
@@ -23,7 +22,7 @@ TIMEZONE="America/Sao_Paulo"
 
 # utils
 echo "<< installing some utilities and deps"
-sudo apt-get update 
+sudo apt-get update
 sudo apt-get install -y aptitude  \
     bison \
     autoconf \
@@ -52,7 +51,7 @@ sudo apt-get install -y aptitude  \
     libxslt1-dev \
     libicu-dev \
     libstdc++6-4.7-dev \
-    re2c 
+    re2c
 echo "<< installing some utilities and deps  [end]"
 
 # google-chrome
@@ -60,8 +59,8 @@ if [ ! -f "$(command which google-chrome)" ]; then
     echo "<< installing google chrome"
     wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
     sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-    sudo apt-get update 
-    sudo apt-get install -y google-chrome-stable 
+    sudo apt-get update
+    sudo apt-get install -y google-chrome-stable
     echo "<< installing google chrome [end]"
 fi
 
@@ -77,59 +76,56 @@ echo "<< installing db clients [end]"
 # shell
 if [ ! -f "$(command which zsh)" ]; then
     echo "<< installing zsh & shell tools"
-    sudo apt-get install -y zsh shellcheck 
+    sudo apt-get install -y zsh shellcheck
     echo "<< changing shell, maybe it will ask password"
     chsh -s /bin/zsh
     /bin/zsh
     echo "<< installing zsh & shell tools [end]"
 fi
 
-# node
-echo "<< installing nodejs"
-source "${SHELL_PROFILE_FILE}"
-if [ ! -f "$(command which nvm)" ]; then
-    curl "https://raw.githubusercontent.com/creationix/nvm/${NVM_VERSION}/install.sh" | sh
-fi
-if [ ! -f "$(command which jshint)" ]; then
-    nvm install "${NODE_VERSION}"
-    nvm use "${NODE_VERSION}"
-    curl https://npmjs.org/install.sh | sh
-    npm config set python /usr/bin/python2 -g
-    npm install -g jshint 
-fi
-echo "<< installing nodejs [end]"
-
 # python
 echo "<< installing python & tools"
-sudo apt-get install -y python-dev python-pip 
-sudo pip install --upgrade pip 
-sudo pip install flake8 jedi autopep8 virtualenvwrapper supervisor 
+sudo apt-get install -y python-dev python-pip
+sudo pip install --upgrade pip
+sudo pip install flake8 jedi autopep8 virtualenvwrapper supervisor
 if [ ! -d "${HOME_PATH}/.pyenv" ]; then
     curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
 fi
 pyenv update
 echo "<< installing python & tools [end]"
 
+# node
+if [ ! -d /opt/node ] || [ ! -f "$(command which npm)" ]; then
+    echo "<< installing nodejs"
+    wget -O "/tmp/node-v${NODE_VERSION}-linux-x64.tar.gz" "http://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz"
+    sudo tar -zxvf "/tmp/node-v${NODE_VERSION}-linux-x64.tar.gz" -C /opt
+    sudo mv "/opt/node-v${NODE_VERSION}-linux-x64" /opt/node
+    source "${SHELL_PROFILE_FILE}"
+    sudo npm config set python /usr/bin/python2 -g
+    sudo npm install -g jshint
+    echo "<< installing nodejs [end]"
+fi
+
 # c/cpp
 echo "<< installing clang"
-sudo apt-get install -y clang uncrustify 
+sudo apt-get install -y clang uncrustify
 echo "<< installing clang [end]"
 
 #ruby
 echo "<< installing ruby"
-sudo apt-get install -y ruby ruby-dev rubygems-integration  
+sudo apt-get install -y ruby ruby-dev rubygems-integration
 sudo gem install rubocop tmuxinator bundler
 echo "<< installing ruby [end]"
 
 #go
 echo "<< installing goLang"
-sudo apt-get install -y golang 
-sudo go get -u github.com/golang/lint/golint 
+sudo apt-get install -y golang
+sudo go get -u github.com/golang/lint/golint
 echo "<< installing goLang [end]"
 
 #php
 echo "<< installing php & tools"
-sudo apt-get install -y php5-cli php5-dev php5-curl php5-intl 
+sudo apt-get install -y php5-cli php5-dev php5-curl php5-intl
 #if [ ! -d "${HOME_PATH}/.phpbrew" ]; then
 #    sudo wget -O /usr/local/bin/phpbrew https://github.com/phpbrew/phpbrew/raw/master/phpbrew
 #    sudo chmod +x /usr/local/bin/phpbrew
@@ -180,8 +176,8 @@ echo "<< installing php & tools [end]"
 if [ ! -f "$(which atom)" ]; then
     echo "<< installing atom editor & plugins"
     wget -O /tmp/atom.deb https://atom.io/download/deb
-    sudo dpkg -i /tmp/atom.deb 
-    sudo apt-get -y -f install 
+    sudo dpkg -i /tmp/atom.deb
+    sudo apt-get -y -f install
     if [ ! -f "$(which apm)" ]; then
         echo "<< [error] apm not found"
         exit 0
@@ -225,15 +221,15 @@ fi
 # vagrant
 if [ ! -f "$(which vagrant)" ]; then
     echo "<< installing vagrant & virtualbox"
-    sudo apt-get install virtualbox -y 
+    sudo apt-get install virtualbox -y
     wget -O "/tmp/vagrant_${VAGRANT_VERSION}_${ARCH}.deb" "https://dl.bintray.com/mitchellh/vagrant/vagrant_${VAGRANT_VERSION}_${ARCH}.deb"
     sudo dpkg -i "/tmp/vagrant_${VAGRANT_VERSION}_${ARCH}.deb" || {
-        sudo apt-get install -y -f 
+        sudo apt-get install -y -f
     }
     echo "<< installing vagrant & virtualbox [end]"
 fi
 
 echo "<< cleaning and removing old packages "
-sudo apt-get autoremove -y 
-sudo apt-get autoclean -y 
+sudo apt-get autoremove -y
+sudo apt-get autoclean -y
 echo "<< cleaning and removing old packages [end]"
