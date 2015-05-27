@@ -70,7 +70,8 @@ echo "<< installing db clients"
 sudo apt-get install -y sqlite3 \
     postgresql-client \
     redis-tools \
-    mongodb-clients 
+    mongodb-clients \
+    mysql-client
 echo "<< installing db clients [end]"
 
 # shell
