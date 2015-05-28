@@ -52,7 +52,7 @@ if ! zgen saved; then
     zgen oh-my-zsh plugins/npm
     zgen oh-my-zsh plugins/catimg
     zgen oh-my-zsh plugins/themes
-    zgen oh-my-zsh themes/aussiegeek
+    zgen oh-my-zsh themes/gentoo
     zgen save
 fi
 
