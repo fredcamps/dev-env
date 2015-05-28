@@ -215,6 +215,7 @@ if [ ! -f "$(which docker)" ]; then
     sudo su -c "curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VER}/docker-compose-${KERNEL}-${ARCH} > /usr/local/bin/docker-compose"
     sudo chmod +x /usr/local/bin/docker-compose
     sudo gpasswd -a "${USER_NAME}" docker
+    sudo update-rc.d docker defaults
     echo "<< installing docker [end]"
 fi
 
