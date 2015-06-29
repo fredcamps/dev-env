@@ -57,6 +57,9 @@ sudo apt-get install -y aptitude  \
     libsmbclient
 echo "<< installing some utilities and deps  [end]"
 
+# vim spf-13
+sh <(curl https://j.mp/spf13-vim3 -L)
+
 # google-chrome
 if [ ! -f "$(command which google-chrome)" ]; then
     echo "<< installing google chrome"
