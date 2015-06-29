@@ -37,7 +37,7 @@ sudo apt-get install -y aptitude  \
     ttf-mscorefonts-installer \
     meld \
     libreoffice \
-    tmux \
+    terminator \
     subversion \
     midori \
     python-software-properties \
@@ -51,7 +51,10 @@ sudo apt-get install -y aptitude  \
     libxslt1-dev \
     libicu-dev \
     libstdc++6-4.7-dev \
-    re2c
+    re2c \
+    nfs-client \
+    cups \
+    libsmbclient
 echo "<< installing some utilities and deps  [end]"
 
 # google-chrome
@@ -114,38 +117,17 @@ echo "<< installing clang [end]"
 #ruby
 echo "<< installing ruby"
 sudo apt-get install -y ruby ruby-dev rubygems-integration
-sudo gem install rubocop tmuxinator bundler
+sudo gem install rubocop bundler
 echo "<< installing ruby [end]"
 
 #go
 echo "<< installing goLang"
 sudo apt-get install -y golang
-sudo go get -u github.com/golang/lint/golint
 echo "<< installing goLang [end]"
 
 #php
 echo "<< installing php & tools"
-sudo apt-get install -y php5-cli php5-dev php5-curl php5-intl
-#if [ ! -d "${HOME_PATH}/.phpbrew" ]; then
-#    sudo wget -O /usr/local/bin/phpbrew https://github.com/phpbrew/phpbrew/raw/master/phpbrew
-#    sudo chmod +x /usr/local/bin/phpbrew
-#    phpbrew init
-#    phpbrew update
-#    sed -i "s/BIN=$(which phpbrew)/BIN=$(command -p which phpbrew)/g" "${HOME_PATH}/.phpbrew/bashrc"
-#    phpbrew install "${PHP_VERSION}" "${PHP_VARIANTS}"
-#    source "${HOME_PATH}/.phpbrew/bashrc"
-#    phpbrew switch "php-${PHP_VERSION}"
-#    sed -i 's/^\[Date\].*//g' "${PHP_PATH}/etc/php.ini"
-#    sed -i 's/^date.*//g' "${PHP_PATH}/etc/php.ini"
-#    {
-#        echo ""
-#        echo "[Date]"
-#        echo "date.timezone=\"${TIMEZONE}\""
-#    } >> "${PHP_PATH}/etc/php.ini"
-#    sed -i 's/^listen = 127.0.0.1:9000/listen = 127.0.0.1:9007/g' "${PHP_PATH}/etc/php-fpm.conf"
-#    phpbrew fpm restart
-#    sudo gpasswd -a "${USER_NAME}" www-data
-#fi
+sudo apt-get install -y php5-cli php5-dev php5-curl php5-intl php5-mysql
 if [ ! -f /usr/local/bin/composer ]; then
     curl -sS https://getcomposer.org/installer | php
     chmod +x "${PWD}/composer.phar" ; sudo mv "${PWD}/composer.phar" /usr/local/bin/composer
@@ -182,29 +164,36 @@ if [ ! -f "$(which atom)" ]; then
         echo "<< [error] apm not found"
         exit 0
     fi
-    apm install term2 \
-    minimap \
-    script \
-    atom-beautify \
-    autocomplete-php \
-    autocomplete-plus-python-jedi \
+    apm install atom-beautify \
+    atom-fuzzy-grep \
     autocomplete-paths \
-    docblockr \
-    emmet \
+    autocomplete-plus-python-jedi \
+    autocomplete-php \
+    autocomplete-phpunit \
+    autocomplete-clang \
+    go-plus \
+    dockblockr \
     language-docker \
     linter \
-    linter-clang \
-    linter-flake8 \
     linter-jshint \
     linter-php \
     linter-phpcs \
     linter-phpmd \
-    linter-ruby \
-    linter-rubocop \
     linter-shellcheck \
-    linter-golint \
-    symbol-gen \
-    language-x86asm
+    linter-flake8 \
+    linter-golinter \
+    linter-gotype \
+    linter-govet \
+    linter-rubocop \
+    linter-ruby \
+    linter-clang \
+    script \
+    term2 \
+    tool-bar \
+    tool-bar-main \
+    emmet \
+    minimap \
+    language-x86
     echo "<< installing atom editor & plugins [end]"
 fi
 
