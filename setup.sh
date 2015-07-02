@@ -168,7 +168,6 @@ if [ ! -f "$(which atom)" ]; then
         exit 0
     fi
     apm install atom-beautify \
-    atom-fuzzy-grep \
     autocomplete-paths \
     autocomplete-plus-python-jedi \
     autocomplete-php \
