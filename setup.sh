@@ -190,8 +190,6 @@ if [ ! -f "$(which atom)" ]; then
     linter-ruby \
     linter-clang \
     script \
-    tool-bar \
-    tool-bar-main \
     emmet \
     minimap \
     language-x86
