@@ -37,7 +37,8 @@ sudo apt-get install -y aptitude  \
     ttf-mscorefonts-installer \
     meld \
     libreoffice \
-    terminator \
+    tmux \
+    xclip \
     subversion \
     midori \
     python-software-properties \
@@ -120,7 +121,7 @@ echo "<< installing clang [end]"
 #ruby
 echo "<< installing ruby"
 sudo apt-get install -y ruby ruby-dev rubygems-integration
-sudo gem install rubocop bundler
+sudo gem install rubocop bundler tmuxinator
 echo "<< installing ruby [end]"
 
 #go
@@ -130,7 +131,7 @@ echo "<< installing goLang [end]"
 
 #php
 echo "<< installing php & tools"
-sudo apt-get install -y php5-cli php5-dev php5-curl php5-intl php5-mysql
+sudo apt-get install -y php5-cli php5-dev php5-curl php5-intl
 if [ ! -f /usr/local/bin/composer ]; then
     curl -sS https://getcomposer.org/installer | php
     chmod +x "${PWD}/composer.phar" ; sudo mv "${PWD}/composer.phar" /usr/local/bin/composer
