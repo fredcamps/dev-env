@@ -55,7 +55,8 @@ sudo apt-get install -y aptitude  \
     re2c \
     nfs-client \
     cups \
-    libsmbclient
+    libsmbclient \
+    xfce4-whiskermenu-plugin
 echo "<< installing some utilities and deps  [end]"
 
 # vim spf-13
