@@ -56,7 +56,8 @@ sudo apt-get install -y aptitude  \
     nfs-client \
     cups \
     libsmbclient \
-    xfce4-whiskermenu-plugin
+    xfce4-whiskermenu-plugin \ 
+    xfce4-indicator-plugin
 echo "<< installing some utilities and deps  [end]"
 
 # vim spf-13
