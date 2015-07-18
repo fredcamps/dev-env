@@ -128,7 +128,7 @@ echo "<< installing ruby [end]"
 
 #go
 echo "<< installing goLang"
-sudo apt-get install -y golang
+sudo apt-get install -y golang golang-go.tools
 echo "<< installing goLang [end]"
 
 #php
