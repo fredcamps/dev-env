@@ -107,7 +107,7 @@ fi
 echo "<< installing python & tools"
 sudo apt-get install -y python-dev python-pip
 sudo pip install --upgrade pip
-sudo pip install flake8 jedi autopep8 virtualenvwrapper supervisor
+sudo pip install flake8 jedi autopep8 virtualenvwrapper supervisor pip
 source "${SHELL_PROFILE_FILE}"
 if [ ! -d "${HOME_PATH}/.pyenv" ]; then
     curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
