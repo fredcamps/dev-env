@@ -57,7 +57,8 @@ sudo apt-get install -y aptitude  \
     cups \
     libsmbclient \
     xfce4-whiskermenu-plugin \ 
-    xfce4-indicator-plugin
+    xfce4-indicator-plugin \
+    galculator
 echo "<< installing some utilities and deps  [end]"
 
 # vim spf-13
