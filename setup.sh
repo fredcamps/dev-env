@@ -29,6 +29,7 @@ sudo apt-get install -y aptitude  \
     automake \
     build-essential \
     libssl-dev \
+    gedit \
     git \
     curl \
     htop \
