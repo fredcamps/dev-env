@@ -59,6 +59,7 @@ sudo apt-get install -y aptitude  \
     libsmbclient \
     xfce4-whiskermenu-plugin \ 
     xfce4-indicator-plugin \
+    libmysqlclient-dev \
     galculator
 echo "<< installing some utilities and deps  [end]"
 
