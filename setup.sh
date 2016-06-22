@@ -211,6 +211,7 @@ if [ ! -f "$(which docker)" ]; then
     sudo touch /etc/apt/sources.list.d/docker.list
     sudo su -c "echo -e \"deb https://apt.dockerproject.org/repo ${DISTRO} main\" > /etc/apt/sources.list.d/docker.list"
     sudo apt-get update && sudo apt-get install docker-engine && sudo apt-get install docker-compose
+    sudo gpasswd -a "${USER_NAME}" docker
     echo "<< installing docker [end]"
 fi
 
