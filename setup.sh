@@ -7,18 +7,13 @@
 USER_NAME="$(whoami)"
 HOME_PATH="/home/${USER_NAME}"
 
-SHELL_PROFILE_FILE="${HOME_PATH}/.zsh_profile"
-
 DISTRO="ubuntu-xenial"
 
-VAGRANT_VERSION="1.7.2"
+VAGRANT_VERSION="1.8.4"
 KERNEL="$(uname -s)"
 ARCH="$(uname -m)"
-DOCKER_COMPOSE_VER="1.2.0"
-NODE_VERSION="0.12.4"
-PHP_VERSION="5.6.9"
-PHP_VARIANTS="+default +fpm +phpdbg"
-PHP_PATH="${HOME_PATH}/.phpbrew/php/php-${PHP_VERSION}"
+NODE_VERSION="6.2.2"
+PHP_VERSION="7.0"
 
 TIMEZONE="America/Sao_Paulo"
 
@@ -37,7 +32,6 @@ sudo apt-get install -y aptitude  \
     htop \
     iotop \
     vim \
-    ttf-mscorefonts-installer \
     meld \
     libreoffice \
     tmux \
@@ -63,21 +57,14 @@ sudo apt-get install -y aptitude  \
     xfce4-indicator-plugin \
     xfce4-goodies \
     libmysqlclient-dev \
-    galculator
+    galculator \ 
+    chromium \ 
+    flashplugin-installer \
+    libmongo-client-dev
 echo "<< installing some utilities and deps  [end]"
 
 # vim spf-13
 sh <(curl https://j.mp/spf13-vim3 -L)
-
-# google-chrome
-if [ ! -f "$(command which google-chrome)" ]; then
-    echo "<< installing google chrome"
-    wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-    sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-    sudo apt-get update
-    sudo apt-get install -y google-chrome-stable
-    echo "<< installing google chrome [end]"
-fi
 
 # db clients
 echo "<< installing db clients"
@@ -104,8 +91,8 @@ if [ ! -d /opt/node ] || [ ! -f "$(command which npm)" ]; then
     wget -O "/tmp/node-v${NODE_VERSION}-linux-x64.tar.gz" "http://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz"
     sudo tar -zxvf "/tmp/node-v${NODE_VERSION}-linux-x64.tar.gz" -C /opt
     sudo mv "/opt/node-v${NODE_VERSION}-linux-x64" /opt/node
-    sudo /opt/node/bin/npm config set python /usr/bin/python2 -g
-    sudo /opt/node/bin/npm install -g jshint
+    sudo su -c "/opt/node/bin/npm config set python /usr/bin/python2 -g"
+    sudo su -c "/opt/node/bin/npm install -g jshint"
     echo "<< installing nodejs [end]"
 fi
 
@@ -114,6 +101,7 @@ echo "<< installing python & tools"
 sudo apt-get install -y python-dev python-pip
 sudo pip install --upgrade pip
 sudo pip install flake8 jedi autopep8 virtualenvwrapper supervisor pip mycli
+
 source "${SHELL_PROFILE_FILE}"
 if [ ! -d "${HOME_PATH}/.pyenv" ]; then
     curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
@@ -129,7 +117,7 @@ echo "<< installing clang [end]"
 #ruby
 echo "<< installing ruby"
 sudo apt-get install -y ruby ruby-dev rubygems-integration
-sudo gem install rubocop bundler tmuxinator
+sudo gem install rubocop bundler tmuxinator fpm
 echo "<< installing ruby [end]"
 
 #go
@@ -139,7 +127,7 @@ echo "<< installing goLang [end]"
 
 #php
 echo "<< installing php & tools"
-sudo apt-get install -y php5-cli php5-dev php5-curl php5-intl
+sudo apt-get install -y "php${PHP_VERSION}-cli php${PHP_VERSION}-dev php${PHP_VERSION}-curl php${PHP_VERSION}-intl"
 if [ ! -f /usr/local/bin/composer ]; then
     curl -sS https://getcomposer.org/installer | php
     chmod +x "${PWD}/composer.phar" ; sudo mv "${PWD}/composer.phar" /usr/local/bin/composer
@@ -162,7 +150,7 @@ if [ ! -f /usr/local/bin/phpmd ]; then
 fi
 if [ ! -f /usr/local/bin/phpdox ]; then
     sudo wget -O /usr/local/bin/phpdox http://phpdox.de/releases/phpdox.phar
-    chmod +x /usr/local/bin/phpdox
+    sudo chmod +x /usr/local/bin/phpdox
 fi
 echo "<< installing php & tools [end]"
 
