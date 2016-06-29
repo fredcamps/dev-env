@@ -60,7 +60,8 @@ sudo apt-get install -y aptitude  \
     galculator \ 
     chromium \ 
     flashplugin-installer \
-    libmongo-client-dev
+    libmongo-client- \
+    xchm
 echo "<< installing some utilities and deps  [end]"
 
 # vim spf-13
