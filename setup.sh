@@ -112,7 +112,7 @@ echo "<< installing python & tools [end]"
 
 # c/cpp
 echo "<< installing clang"
-sudo apt-get install -y clang uncrustify
+sudo apt-get install -y clang clang-tidy uncrustify
 echo "<< installing clang [end]"
 
 #ruby
