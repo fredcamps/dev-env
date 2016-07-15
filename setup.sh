@@ -39,6 +39,7 @@ sudo apt-get install -y aptitude  \
     subversion \
     midori \
     python-software-properties \
+    python-dev \
     ctags \
     tree \
     "linux-headers-$(uname -r)" \
@@ -60,8 +61,9 @@ sudo apt-get install -y aptitude  \
     galculator \ 
     chromium \ 
     flashplugin-installer \
-    libmongo-client- \
-    xchm
+    libmongo-client-dev \
+    libpq-dev \
+    xchm 
 echo "<< installing some utilities and deps  [end]"
 
 # vim spf-13
