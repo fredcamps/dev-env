@@ -103,18 +103,12 @@ fi
 echo "<< installing python & tools"
 sudo apt-get install -y python-dev python-pip
 sudo pip install --upgrade pip
-sudo pip install flake8 jedi autopep8 virtualenvwrapper supervisor pip mycli
-
-source "${SHELL_PROFILE_FILE}"
-if [ ! -d "${HOME_PATH}/.pyenv" ]; then
-    curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
-fi
-pyenv update
+sudo pip install pylint flake8 jedi autopep8 virtualenvwrapper supervisor pip mycli
 echo "<< installing python & tools [end]"
 
 # c/cpp
 echo "<< installing clang"
-sudo apt-get install -y clang clang-tidy uncrustify
+sudo apt-get install -y clang uncrustify
 echo "<< installing clang [end]"
 
 #ruby
