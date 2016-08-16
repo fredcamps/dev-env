@@ -103,7 +103,7 @@ fi
 echo "<< installing python & tools"
 sudo apt-get install -y python-dev python-pip
 sudo pip install --upgrade pip
-sudo pip install pylint flake8 jedi autopep8 virtualenvwrapper supervisor pip mycli
+sudo pip install pylama pylama_pylint flake8-import-order jedi autopep8 virtualenvwrapper
 echo "<< installing python & tools [end]"
 
 # c/cpp
