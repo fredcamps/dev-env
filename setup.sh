@@ -86,7 +86,13 @@ fi
 echo "<< installing python & tools"
 sudo apt-get install -y python3-dev python3-pip
 sudo pip3 install --upgrade pip
-sudo pip3 install pylama pylama_pylint pylama_gjslint jedi autopep8 virtualenvwrapper radon pylint pylint-mccabe
+sudo pip3 install virtualenvwrapper
+sudo pip3 install jedi autopep8
+sudo pip3 install pycodestyle, pydocstyle
+sudo pip3 install radon pylint 
+sudo pip3 install pylama pylama_pylint pylama_gjslint
+sudo pip3 install flake8-import-order
+sudo pip3 install flake8 flake8-regex flake8-bugbear
 echo "<< installing python & tools [end]"
 
 # c/cpp
