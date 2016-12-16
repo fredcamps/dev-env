@@ -88,11 +88,8 @@ sudo apt-get install -y python3-dev python3-pip
 sudo pip3 install --upgrade pip
 sudo pip3 install virtualenvwrapper
 sudo pip3 install jedi autopep8
-sudo pip3 install pycodestyle, pydocstyle
-sudo pip3 install radon pylint 
-sudo pip3 install pylama pylama_pylint pylama_gjslint
-sudo pip3 install flake8-import-order
-sudo pip3 install flake8 flake8-regex flake8-bugbear
+sudo pip3 install pycodestyle pydocstyle radon pylint 
+sudo pip3 install pylama pyflakes pylama_pylint pylama_gjslint
 echo "<< installing python & tools [end]"
 
 # c/cpp
@@ -150,7 +147,8 @@ fi
 # vagrant
 if [ ! -f "$(which vagrant)" ]; then
     echo "<< installing vagrant & virtualbox"
-    sudo apt-get install virtualbox -y
+    sudo apt-get install virtualbox -y dkms
+    sudo /etc/init.d/vboxdrv setup 
     wget -O "/tmp/vagrant_${VAGRANT_VERSION}_${ARCH}.deb" "https://dl.bintray.com/mitchellh/vagrant/vagrant_${VAGRANT_VERSION}_${ARCH}.deb"
     sudo dpkg -i "/tmp/vagrant_${VAGRANT_VERSION}_${ARCH}.deb" || {
         sudo apt-get install -y -f
