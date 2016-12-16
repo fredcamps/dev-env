@@ -147,7 +147,7 @@ fi
 # vagrant
 if [ ! -f "$(which vagrant)" ]; then
     echo "<< installing vagrant & virtualbox"
-    sudo apt-get install virtualbox -y dkms
+    sudo apt-get install -y virtualbox dkms
     sudo /etc/init.d/vboxdrv setup 
     wget -O "/tmp/vagrant_${VAGRANT_VERSION}_${ARCH}.deb" "https://dl.bintray.com/mitchellh/vagrant/vagrant_${VAGRANT_VERSION}_${ARCH}.deb"
     sudo dpkg -i "/tmp/vagrant_${VAGRANT_VERSION}_${ARCH}.deb" || {
