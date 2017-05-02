@@ -17,6 +17,7 @@ TIMEZONE="America/Sao_Paulo"
 echo "<< installing some utilities and deps"
 sudo apt-get update
 sudo apt-get install -y aptitude  \
+    aufs-tools \
     bison \
     autoconf \
     automake \
