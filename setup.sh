@@ -3,13 +3,11 @@
 # Author : Fred Campos fredcamps/dev-env
 # Script for installing my env apps
 #
-
-DISTRO="ubuntu-xenial"
+VENDOR="$(lsb_release -i | awk '{print $2}' | awk '{print tolower($0)}')"
+CODENAME="$(lsb_release -cs)"
+DISTRO="${VENDOR}-${CODENAME}"
 USER_NAME="$(whoami)"
 HOME_PATH="/home/${USER_NAME}"
-VAGRANT_VERSION="1.8.7"
-KERNEL="$(uname -s)"
-ARCH="$(uname -m)"
 CURL_VERSION="7.51.0"
 TIMEZONE="America/Sao_Paulo"
 
@@ -27,12 +25,12 @@ sudo apt-get install -y aptitude  \
     htop \
     iotop \
     vim \
+    emacs-nox \
     libreoffice \
     tmux \
     tmuxinator \
     xclip \
     subversion \
-    midori \
     python-software-properties \
     python-dev \
     ctags \
@@ -63,15 +61,6 @@ echo "<< installing some utilities and deps  [end]"
 # vim spf-13
 sh <(curl https://j.mp/spf13-vim3 -L)
 
-# db clients
-echo "<< installing db clients"
-sudo apt-get install -y sqlite3 \
-    postgresql-client \
-    redis-tools \
-    mongodb-clients \
-    mysql-client
-echo "<< installing db clients [end]"
-
 # shell
 sudo apt-get install shellcheck
 if [ ! -f "$(command which zsh)" ]; then
@@ -79,83 +68,30 @@ if [ ! -f "$(command which zsh)" ]; then
     sudo apt-get install -y zsh
     echo "<< changing shell, maybe it will ask password"
     chsh -s /bin/zsh
-    /bin/zsh
     echo "<< installing zsh [end]"
 fi
 
 # python
 echo "<< installing python & tools"
-sudo apt-get install -y python3-dev python3-pip
-sudo pip3 install --upgrade pip
-sudo pip3 install virtualenvwrapper
-sudo pip3 install jedi autopep8
-sudo pip3 install pycodestyle pydocstyle radon pylint 
-sudo pip3 install pylama pyflakes pylama_pylint pylama_gjslint
+sudo apt-get install -y python-pip
+sudo pip install --upgrade pip
+sudo pip install virtualenvwrapper
+sudo pip install jedi \
+                 autopep8 \
+                 pycodestyle \
+                 pydocstyle \
+                 radon \
+                 pylint \ 
+                 pylama \
+                 pyflakes \
+                 pylama_pylint \
+                 pylama_gjslint
 echo "<< installing python & tools [end]"
 
 # c/cpp
 echo "<< installing clang"
 sudo apt-get install -y clang uncrustify
 echo "<< installing clang [end]"
-
-#go
-echo "<< installing goLang"
-sudo apt-get install -y golang golang-go.tools
-echo "<< installing goLang [end]"
-
-# atom
-if [ ! -f "$(which atom)" ]; then
-    echo "<< installing atom editor & plugins"
-    wget -O /tmp/atom.deb https://atom.io/download/deb
-    sudo dpkg -i /tmp/atom.deb
-    sudo apt-get -y -f install
-    if [ ! -f "$(which apm)" ]; then
-        echo "<< [error] apm not found"
-        exit 0
-    fi
-    apm install atom-beautify
-    apm install autocomplete-paths
-    apm install autocomplete-python
-    apm install autocomplete-clang
-    apm install atom-jinja2
-    apm install go-plus
-    apm install dockblockr
-    apm install language-docker
-    apm install linter
-    apm install linter-shellcheck
-    apm install linter-pylama
-    apm install linter-clang
-    apm install go-plus
-    apm install minimap
-    apm install language-x86
-    apm install language-r
-    apm install autocomplete-R
-    apm install linter-lintr
-    echo "<< installing atom editor & plugins [end]"
-fi
-
-# docker
-if [ ! -f "$(which docker)" ]; then
-    echo "<< installing docker"
-    sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
-    sudo touch /etc/apt/sources.list.d/docker.list
-    sudo su -c "echo -e \"deb https://apt.dockerproject.org/repo ${DISTRO} main\" > /etc/apt/sources.list.d/docker.list"
-    sudo apt-get update && sudo apt-get install docker-engine && sudo pip install docker-compose
-    sudo gpasswd -a "${USER_NAME}" docker
-    echo "<< installing docker [end]"
-fi
-
-# vagrant
-if [ ! -f "$(which vagrant)" ]; then
-    echo "<< installing vagrant & virtualbox"
-    sudo apt-get install -y virtualbox dkms
-    sudo /etc/init.d/vboxdrv setup 
-    wget -O "/tmp/vagrant_${VAGRANT_VERSION}_${ARCH}.deb" "https://dl.bintray.com/mitchellh/vagrant/vagrant_${VAGRANT_VERSION}_${ARCH}.deb"
-    sudo dpkg -i "/tmp/vagrant_${VAGRANT_VERSION}_${ARCH}.deb" || {
-        sudo apt-get install -y -f
-    }
-    echo "<< installing vagrant & virtualbox [end]"
-fi
 
 #curl
 echo "<< installing curl"
@@ -166,6 +102,22 @@ wget http://curl.haxx.se/download/curl-${CURL_VERSION}.tar.bz2 && tar -jxvf curl
 cd curl-${CURL_VERSION} && ./configure --with-nghttp2=/usr/local --with-ssl && make && sudo make install
 sudo ldconfig
 echo "<< installing curl [end]"
+
+# docker
+if [ ! -f "$(which docker)" ]; then
+    echo "<< installing docker"
+    
+    sudo su -c \
+        "echo deb [arch=amd64] https://download.docker.com/linux/${VENDOR} ${CODENAME} stable >> /etc/apt/sources.list.d/docker.list"
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    sudo apt-get update && sudo apt-get install docker-ce && sudo pip install docker-compose
+    sudo gpasswd -a "${USER_NAME}" docker
+    echo "<< installing docker [end]"
+fi
+
+# virt-manager
+sudo apt-get install -y virt-manager
+sudo gpasswd -a "${USER_NAME}" libvirtd 
 
 echo "<< cleaning and removing old packages "
 sudo apt-get autoremove -y
