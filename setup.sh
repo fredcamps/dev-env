@@ -55,7 +55,8 @@ sudo apt-get install -y aptitude  \
     chromium \ 
     flashplugin-installer \
     xchm \
-    wget
+    wget \
+    silversearcher-ag
 echo "<< installing some utilities and deps  [end]"
 
 # vim spf-13
@@ -74,23 +75,21 @@ fi
 # python
 echo "<< installing python & tools"
 sudo apt-get install -y python-pip
-sudo pip install --upgrade pip
-sudo pip install virtualenvwrapper
-sudo pip install jedi \
-                 autopep8 \
-                 pycodestyle \
-                 pydocstyle \
-                 radon \
-                 pylint \ 
-                 pylama \
-                 pyflakes \
-                 pylama_pylint \
-                 pylama_gjslint
+pip install --upgrade pip
+pip install virtualenvwrapper
+pip install jedi \
+            autopep8 \
+            pycodestyle \
+            pydocstyle \
+            radon \
+            pylint \ 
+            flake8 \
+            radon
 echo "<< installing python & tools [end]"
 
 # c/cpp
 echo "<< installing clang"
-sudo apt-get install -y clang uncrustify
+sudo apt-get install -y clang clang-format libclang-dev libclang1 global cmake llvm-dev llvm-runtime
 echo "<< installing clang [end]"
 
 #curl
@@ -114,10 +113,6 @@ if [ ! -f "$(which docker)" ]; then
     sudo gpasswd -a "${USER_NAME}" docker
     echo "<< installing docker [end]"
 fi
-
-# virt-manager
-sudo apt-get install -y virt-manager
-sudo gpasswd -a "${USER_NAME}" libvirtd 
 
 echo "<< cleaning and removing old packages "
 sudo apt-get autoremove -y
