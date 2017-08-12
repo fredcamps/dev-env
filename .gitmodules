@@ -1,0 +1,6 @@
+[submodule "dotfiles/.config/xfce4/terminal"]
+	path = dotfiles/.config/xfce4/terminal
+	url = git@gist.github.com:a34e1de72e46b03e2d05.git
+[submodule "dotfiles/.ssh"]
+	path = dotfiles/.ssh
+	url = git@gist.github.com:6697f861521b63ab78ecfc3f50baa4c2.git
