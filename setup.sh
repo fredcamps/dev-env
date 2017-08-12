@@ -10,6 +10,7 @@ USER_NAME="$(whoami)"
 HOME_PATH="/home/${USER_NAME}"
 CURL_VERSION="7.51.0"
 TIMEZONE="America/Sao_Paulo"
+DIR="$(pwd)"
 
 # utils
 echo "<< installing some utilities and deps"
@@ -51,13 +52,28 @@ sudo apt-get install -y aptitude  \
     xfce4-indicator-plugin \
     xfce4-goodies \
     libmysqlclient-dev \
-    galculator \ 
     chromium \ 
     flashplugin-installer \
     xchm \
     wget \
-    silversearcher-ag
+    silversearcher-ag \ 
+    markdown \
+    software-properties-common \ 
+    playonlinux \
+    dosbox
 echo "<< installing some utilities and deps  [end]"
+
+#curl
+echo "<< installing curl"
+sudo apt-get build-dep -y curl
+git clone https://github.com/tatsuhiro-t/nghttp2.git ~/Downloads && cd ~/Downloads/nghttp2
+autoreconf -i && automake && autoconf && ./configure && make && sudo make install && cd ~/Downloads
+wget http://curl.haxx.se/download/curl-${CURL_VERSION}.tar.bz2 && tar -jxvf curl-${CURL_VERSION}.tar.bz2
+cd curl-${CURL_VERSION} && ./configure --with-nghttp2=/usr/local --with-ssl && make && sudo make install
+sudo ldconfig
+sudo rm -rf ~/Downloads/nghttp2 ~/Downloads/curl-${CURL_VERSION}
+which curl || { echo "<< ERROR when install curl" && exit 1; }
+echo "<< installing curl [end]"
 
 # vim spf-13
 sh <(curl https://j.mp/spf13-vim3 -L)
@@ -72,19 +88,12 @@ if [ ! -f "$(command which zsh)" ]; then
     echo "<< installing zsh [end]"
 fi
 
+# http://python-3-patterns-idioms-test.readthedocs.io/en/latest/index.html
 # python
 echo "<< installing python & tools"
 sudo apt-get install -y python-pip
 pip install --upgrade pip
 pip install virtualenvwrapper
-pip install jedi \
-            autopep8 \
-            pycodestyle \
-            pydocstyle \
-            radon \
-            pylint \ 
-            flake8 \
-            radon
 echo "<< installing python & tools [end]"
 
 # c/cpp
@@ -92,26 +101,40 @@ echo "<< installing clang"
 sudo apt-get install -y clang clang-format libclang-dev libclang1 global cmake llvm-dev llvm-runtime
 echo "<< installing clang [end]"
 
-#curl
-echo "<< installing curl"
-sudo apt-get build-dep -y curl
-git clone https://github.com/tatsuhiro-t/nghttp2.git ~/Downloads && cd ~/Downloads/nghttp2
-autoreconf -i && automake && autoconf && ./configure && make && sudo make install && cd ~/Downloads
-wget http://curl.haxx.se/download/curl-${CURL_VERSION}.tar.bz2 && tar -jxvf curl-${CURL_VERSION}.tar.bz2
-cd curl-${CURL_VERSION} && ./configure --with-nghttp2=/usr/local --with-ssl && make && sudo make install
-sudo ldconfig
-echo "<< installing curl [end]"
+# golang
+echo "<< installing golang"
+sudo apt install golang
+echo "<< installing golang [end]"
+
+# node
+echo "<< installing nodejs"
+wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
+echo "<< installing nodejs [end]"
+
+# rubysha
+echo "<< installing ruby"
+gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+curl https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer | bash -s stable --ruby=2.4.1 --gems=bundler,jekyll
+echo "<< installing ruby [end]"
 
 # docker
 if [ ! -f "$(which docker)" ]; then
     echo "<< installing docker"
-    
-    sudo su -c \
-        "echo deb [arch=amd64] https://download.docker.com/linux/${VENDOR} ${CODENAME} stable >> /etc/apt/sources.list.d/docker.list"
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    sudo apt-get update && sudo apt-get install docker-ce && sudo pip install docker-compose
+    curl -fsSL https://download.docker.com/linux/${VENDOR}/gpg | sudo apt-key add -
+    sudo add-apt-repository \
+        "deb [arch=amd64] https://download.docker.com/linux/${VENDOR} ${CODENAME} stable"
+    sudo apt-get update && sudo apt-get install docker-ce && pip install docker-compose
     sudo gpasswd -a "${USER_NAME}" docker
     echo "<< installing docker [end]"
+fi
+
+# vagrant
+if [ ! -f /opt/vagrant/bin/vagrant ]; then
+    echo "<< installing vagrant"
+    sudo git clone https://github.com/mitchellh/vagrant.git /opt/vagrant/
+    cd /opt/vagrant && bundle install && cd ${DIR}
+    sudo ln -sf /opt/vagrant/bin/vagrant /usr/local/bin/vagrant
+    echo "<< installing vagrant [end]"
 fi
 
 echo "<< cleaning and removing old packages "
