@@ -4,3 +4,6 @@
 [submodule "dotfiles/.ssh"]
 	path = dotfiles/.ssh
 	url = git@gist.github.com:6697f861521b63ab78ecfc3f50baa4c2.git
+[submodule "dotfiles/commons"]
+	path = dotfiles/commons
+	url = git@gist.github.com:11fc6cc5f08238a98bb95e9fb012748a.git
