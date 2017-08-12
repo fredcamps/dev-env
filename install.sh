@@ -66,6 +66,8 @@ echo "<< installing some utilities and deps	 [end]"
 # dot files
 echo "<< reloading confs"
 git submodule update --init
+cp "${DIR}/dotfiles/commons/*" "$HOME" || { exit 1; }
+cp -r "${DIR}/dotfiles/\.[0-9a-zA-Z].*" "$HOME" || { exit 1; }
 echo "<< reloading confs [end]"
 
 # curl
@@ -110,7 +112,7 @@ echo "<< installing clang [end]"
 
 # golang
 echo "<< installing golang"
-sudo apt install golang
+sudo apt install -y golang
 echo "<< installing golang [end]"
 
 # node
@@ -127,6 +129,9 @@ if [ ! -f "$(which rvm)" ]; then
 	 curl https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer | bash -s stable --ruby=2.4.1 --gems=bundler,jekyll
 	 echo "<< installing ruby [end]"
 fi
+
+# java
+sudo apt-get -y install default-jdk
 
 # docker
 if [ ! -f "$(which docker)" ]; then
