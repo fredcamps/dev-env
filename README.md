@@ -1,3 +1,3 @@
 fredcamps/dev-env
 
-My automated environment installation
+My dotfiles and installation script for personal environment
