@@ -7,3 +7,6 @@
 [submodule "dotfiles/.ssh"]
 	path = dotfiles/.ssh
 	url = git@gist.github.com:6697f861521b63ab78ecfc3f50baa4c2.git
+[submodule "dotfiles/.config/systemd/user/emacsd.service"]
+	path = dotfiles/.config/systemd/user/emacsd.service
+	url = git@gist.github.com:a81a9166d8a7bd2a1eb4ee4cae40a6b6.git
