@@ -66,8 +66,8 @@ echo "<< installing some utilities and deps	 [end]"
 # dot files
 echo "<< reloading confs"
 git submodule update --init
-cp "${DIR}/dotfiles/commons/*" "$HOME" || { exit 1; }
-cp -r "${DIR}/dotfiles/\.[0-9a-zA-Z].*" "$HOME" || { exit 1; }
+rsync -rv --exclude=.git "${DIR}/dotfiles/*"  "${HOME}" || { exit 1; }
+cp -r "${DIR}/dotfolders/" "${HOME}" || { exit 1; }
 echo "<< reloading confs [end]"
 
 # curl
