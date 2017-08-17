@@ -1,12 +1,15 @@
-[submodule "dotfiles/.config/xfce4/terminal"]
-	path = dotfiles/.config/xfce4/terminal
-	url = git@gist.github.com:a34e1de72e46b03e2d05.git
-[submodule "dotfiles/commons"]
-	path = dotfiles/commons
+[submodule "dotfiles"]
+	path = dotfiles
 	url = git@gist.github.com:11fc6cc5f08238a98bb95e9fb012748a.git
-[submodule "dotfiles/.ssh"]
-	path = dotfiles/.ssh
-	url = git@gist.github.com:6697f861521b63ab78ecfc3f50baa4c2.git
-[submodule "dotfiles/.config/systemd/user/emacsd.service"]
-	path = dotfiles/.config/systemd/user/emacsd.service
+[submodule "dotfolders/.config/systemd/user"]
+	path = dotfolders/.config/systemd/user
 	url = git@gist.github.com:a81a9166d8a7bd2a1eb4ee4cae40a6b6.git
+[submodule "dotfolders/.config/xfce4/terminal"]
+	path = dotfolders/.config/xfce4/terminal
+	url = git@gist.github.com:a34e1de72e46b03e2d05.git
+[submodule "dotfolders/.ssh"]
+	path = dotfolders/.ssh
+	url = git@gist.github.com:6697f861521b63ab78ecfc3f50baa4c2.git
+[submodule "dotfiles"]
+	path = dotfiles
+	url = git@gist.github.com:11fc6cc5f08238a98bb95e9fb012748a.git
