@@ -52,7 +52,7 @@ sudo apt-get install -y aptitude	\
 		xfce4-indicator-plugin \
 		xfce4-goodies \
 		libmysqlclient-dev \
-		chromium \
+		firefox \
 		flashplugin-installer \
 		xchm \
 		wget \
