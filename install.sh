@@ -61,7 +61,7 @@ sudo apt-get install -y aptitude	\
 		software-properties-common \
 		playonlinux \
 		gnome-disk-utility \
-		gparted \x
+		gparted \
 		dosbox
 echo "<< installing some utilities and deps	 [end]"
 
