@@ -60,6 +60,8 @@ sudo apt-get install -y aptitude	\
 		markdown \
 		software-properties-common \
 		playonlinux \
+		gnome-disk-utility \
+		gparted \x
 		dosbox
 echo "<< installing some utilities and deps	 [end]"
 
