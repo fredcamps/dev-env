@@ -62,7 +62,8 @@ sudo apt-get install -y aptitude	\
 		playonlinux \
 		gnome-disk-utility \
 		gparted \
-		dosbox
+		dosbox \
+		snapcraft
 echo "<< installing some utilities and deps	 [end]"
 
 # dot files
