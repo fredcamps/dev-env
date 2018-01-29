@@ -15,56 +15,60 @@ DIR="$(pwd)"
 # utils
 echo "<< installing some utilities and deps"
 sudo apt-get update
-sudo apt-get install -y aptitude	\
-		aufs-tools \
-		bison \
-		autoconf \
-		automake \
-		build-essential \
-		libssl-dev \
-		git \
-		htop \
-		iotop \
-		vim \
-		emacs-nox \
-		libreoffice \
-		tmux \
-		tmuxinator \
-		xclip \
-		subversion \
-		python-software-properties \
-		python-dev \
-		ctags \
-		tree \
-		"linux-headers-$(uname -r)" \
-		libxml2-dev \
-		libbz2-dev \
-		libmcrypt-dev \
-		libreadline-dev \
-		libxslt1-dev \
-		libicu-dev \
-		libstdc++6-4.7-dev \
-		re2c \
-		nfs-client \
-		cups \
-		libsmbclient \
-		xfce4-whiskermenu-plugin \
-		xfce4-indicator-plugin \
-		xfce4-goodies \
-		libmysqlclient-dev \
-		firefox \
-		flashplugin-installer \
-		xchm \
-		wget \
-		silversearcher-ag \
-		markdown \
-		software-properties-common \
-		playonlinux \
-		gnome-disk-utility \
-		gparted \
-		dosbox \
-		snapcraft
+sudo apt-get install -y -q aufs-tools \
+    bison \
+    autoconf \
+    automake \
+    build-essential \
+    libssl-dev \
+    git \
+    htop \
+    iotop \
+    vim \
+    emacs-nox \
+    libreoffice \
+    tmux \
+    tmuxinator \
+    xclip \
+    subversion \
+    python-software-properties \
+    python-dev \
+    ctags \
+    tree \
+    "linux-headers-$(uname -r)" \
+    libxml2-dev \
+    libbz2-dev \
+    libmcrypt-dev \
+    libreadline-dev \
+    libxslt1-dev \
+    libicu-dev \
+    libstdc++6-4.7-dev \
+    re2c \
+    nfs-client \
+    cups \
+    libsmbclient \
+    xfce4-whiskermenu-plugin \
+    xfce4-indicator-plugin \
+    xfce4-goodies \
+    libmysqlclient-dev \
+    flashplugin-installer \
+    xchm \
+    wget \
+    silversearcher-ag \
+    markdown \
+    software-properties-common \
+    playonlinux \
+    gnome-disk-utility \
+    gparted \
+    dosbox \
+    snapcraft \
+    screen \
+    chromium-browser
 echo "<< installing some utilities and deps	 [end]"
+
+# firefox
+sudo add-apt-repository ppa:jonathonf/firefox-esr
+sudo apt-get update && apt-get install -y -q firefox-esr
 
 # dot files
 echo "<< reloading confs"
@@ -93,11 +97,11 @@ sh <(curl https://j.mp/spf13-vim3 -L)
 # shell
 sudo apt-get install shellcheck
 if [ ! -f "$(which zsh)" ]; then
-		echo "<< installing zsh"
-		sudo apt-get install -y zsh
-		echo "<< changing shell, maybe it will ask password"
-		chsh -s /bin/zsh
-		echo "<< installing zsh [end]"
+    echo "<< installing zsh"
+    sudo apt-get install -y zsh
+    echo "<< changing shell, maybe it will ask password"
+    chsh -s /bin/zsh
+    echo "<< installing zsh [end]"
 fi
 
 # http://python-3-patterns-idioms-test.readthedocs.io/en/latest/index.html
@@ -120,17 +124,17 @@ echo "<< installing golang [end]"
 
 # node
 if [ ! -f "$(which nvm)" ]; then
-	 echo "<< installing nodejs"
-	 wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
-	 echo "<< installing nodejs [end]"
+    echo "<< installing nodejs"
+    wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
+    echo "<< installing nodejs [end]"
 fi
 
 # rubysha
 if [ ! -f "$(which rvm)" ]; then
-	 echo "<< installing ruby"
-	 gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
-	 curl https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer | bash -s stable --ruby=2.4.1 --gems=bundler,jekyll
-	 echo "<< installing ruby [end]"
+    echo "<< installing ruby"
+    gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+    curl https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer | bash -s stable --ruby=2.4.1 --gems=bundler,jekyll
+    echo "<< installing ruby [end]"
 fi
 
 # java
@@ -138,22 +142,22 @@ sudo apt-get -y install default-jdk
 
 # docker
 if [ ! -f "$(which docker)" ]; then
-		echo "<< installing docker"
-		curl -fsSL https://download.docker.com/linux/${VENDOR}/gpg | sudo apt-key add -
-		sudo add-apt-repository \
-				"deb [arch=amd64] https://download.docker.com/linux/${VENDOR} ${CODENAME} stable"
-		sudo apt-get update && sudo apt-get install docker-ce && pip install docker-compose
-		sudo gpasswd -a "${USER_NAME}" docker
-		echo "<< installing docker [end]"
+    echo "<< installing docker"
+    curl -fsSL https://download.docker.com/linux/${VENDOR}/gpg | sudo apt-key add -
+    sudo add-apt-repository \
+            "deb [arch=amd64] https://download.docker.com/linux/${VENDOR} ${CODENAME} stable"
+    sudo apt-get update && sudo apt-get install docker-ce && pip install docker-compose
+    sudo gpasswd -a "${USER_NAME}" docker
+    echo "<< installing docker [end]"
 fi
 
 # vagrant
 if [ ! -f /opt/vagrant/bin/vagrant ]; then
-		echo "<< installing vagrant"
-		sudo git clone https://github.com/mitchellh/vagrant.git /opt/vagrant/
-		{ cd /opt/vagrant || exit 1; } && bundle install && { cd "${DIR}" || exit 1; }
-		sudo ln -sf /opt/vagrant/bin/vagrant /usr/local/bin/vagrant
-		echo "<< installing vagrant [end]"
+    echo "<< installing vagrant"
+    sudo git clone https://github.com/mitchellh/vagrant.git /opt/vagrant/
+    { cd /opt/vagrant || exit 1; } && bundle install && { cd "${DIR}" || exit 1; }
+    sudo ln -sf /opt/vagrant/bin/vagrant /usr/local/bin/vagrant
+    echo "<< installing vagrant [end]"
 fi
 
 echo "<< cleaning and removing old packages "
