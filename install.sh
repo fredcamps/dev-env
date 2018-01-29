@@ -67,7 +67,7 @@ sudo apt-get install -y -q aufs-tools \
 echo "<< installing some utilities and deps	 [end]"
 
 # firefox
-sudo add-apt-repository ppa:jonathonf/firefox-esr
+sudo add-apt-repository ppa:mozillateam/ppa
 sudo apt-get update && apt-get install -y -q firefox-esr
 
 # dot files
