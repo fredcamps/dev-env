@@ -12,6 +12,8 @@ CURL_VERSION="7.58.0"
 # TIMEZONE="America/Sao_Paulo"
 DIR="$(pwd)"
 
+NVM_VERSION="v0.33.8"
+
 # utils
 echo "<< installing some utilities and deps"
 sudo apt-get update
@@ -134,15 +136,15 @@ echo "<< installing golang [end]"
 # node
 if [ ! -f "$(which nvm)" ]; then
     echo "<< installing nodejs"
-    wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
+    wget -qO- "https://raw.githubusercontent.com/creationix/nvm/${NVM_VERSION}/install.sh" | bash
     echo "<< installing nodejs [end]"
 fi
 
 # rubysha
 if [ ! -f "$(which rvm)" ]; then
     echo "<< installing ruby"
-    gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
-    curl https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer | bash -s stable --ruby=2.4.1 --gems=bundler,jekyll
+    curl -sSL https://rvm.io/mpapis.asc | gpg2 --import -
+	curl https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer | bash -s stable --ruby=2.4.1 --gems=bundler,jekyll
     echo "<< installing ruby [end]"
 fi
 
