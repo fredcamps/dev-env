@@ -3,12 +3,12 @@
 # Author : Fred Campos fredcamps/dev-env
 # Script for installing my env apps
 #
-VENDOR="$(lsb_release -i | awk '{print $2}' | awk '{print tolower($0)}')"
+VENDOR="$(lsb_release -i | awk '{print $3}' | awk '{print tolower($0)}')"
 CODENAME="$(lsb_release -cs)"
 # DISTRO="${VENDOR}-${CODENAME}"
 USER_NAME="$(whoami)"
 # HOME_PATH="/home/${USER_NAME}"
-CURL_VERSION="7.51.0"
+CURL_VERSION="7.58.0"
 # TIMEZONE="America/Sao_Paulo"
 DIR="$(pwd)"
 
@@ -63,36 +63,44 @@ sudo apt-get install -y -q aufs-tools \
     dosbox \
     snapcraft \
     screen \
-    chromium-browser
+    chromium-browser \
+	gimp
 echo "<< installing some utilities and deps	 [end]"
 
 # firefox
-sudo add-apt-repository ppa:mozillateam/ppa
-sudo apt-get update && apt-get install -y -q firefox-esr
+# sudo add-apt-repository ppa:mozillateam/ppa
+# sudo apt-get update && apt-get install -y -q firefox-esr
 
 # dot files
 echo "<< reloading confs"
 git submodule update --init
-rsync -rv --exclude=.git "${DIR}/dotfiles/*"  "${HOME}" || { exit 1; }
+rsync -rv --exclude=.git "${DIR}/dotfiles/"  "${HOME}" || { exit 1; }
 cp -r "${DIR}/dotfolders/" "${HOME}" || { exit 1; }
 echo "<< reloading confs [end]"
 
 # curl
 echo "<< installing curl"
 sudo apt-get build-dep -y curl
-git clone https://github.com/tatsuhiro-t/nghttp2.git ~/Downloads || exit 1
-cd "${HOME}/Downloads/nghttp2" || exit 1
+git clone https://github.com/tatsuhiro-t/nghttp2.git "${HOME}/Downloads/nghttp2" || echo "nghttp is already cloned";
+cd "${HOME}/Downloads/nghttp2" || exit 1;
+if [ -f "$(which curl)" ]; then
+	rm -rf "$(which curl)"
+	sudo apt-get purge -y curl
+fi
 autoreconf -i && automake && autoconf && ./configure && make && sudo make install
-cd ~/Downloads || exit 1;
-wget http://curl.haxx.se/download/curl-${CURL_VERSION}.tar.bz2 && tar -jxvf curl-${CURL_VERSION}.tar.bz2
-cd curl-${CURL_VERSION} && ./configure --with-nghttp2=/usr/local --with-ssl && make && sudo make install
+cd "${HOME}/Downloads" || exit 1;
+wget "http://curl.haxx.se/download/curl-${CURL_VERSION}.tar.bz2" && tar -jxvf "curl-${CURL_VERSION}.tar.bz2"
+cd "curl-${CURL_VERSION}" && ./configure --with-nghttp2=/usr/local --with-ssl && make && sudo make install
 sudo ldconfig
-sudo rm -rf ~/Downloads/nghttp2 ~/Downloads/curl-${CURL_VERSION}
-which curl || { echo "<< ERROR when install curl" && exit 1; }
+sudo rm -rf "${HOME}/Downloads/nghttp2" "${HOME}/Downloads/curl-${CURL_VERSION}"
+if [ ! -f "$(which curl)" ]; then
+	echo "<< ERROR when install curl" && exit 1;
+fi
+cd "${DIR}"
 echo "<< installing curl [end]"
 
 # vim spf-13
-sh <(curl https://j.mp/spf13-vim3 -L)
+# sh <(curl https://j.mp/spf13-vim3 -L)
 
 # shell
 sudo apt-get install shellcheck
@@ -108,8 +116,8 @@ fi
 # python
 echo "<< installing python & tools"
 sudo apt-get install -y python-pip
-pip install --upgrade pip
-pip install virtualenvwrapper
+sudo pip install --upgrade pip
+sudo pip install virtualenvwrapper
 echo "<< installing python & tools [end]"
 
 # c/cpp
@@ -146,7 +154,7 @@ if [ ! -f "$(which docker)" ]; then
     curl -fsSL https://download.docker.com/linux/${VENDOR}/gpg | sudo apt-key add -
     sudo add-apt-repository \
             "deb [arch=amd64] https://download.docker.com/linux/${VENDOR} ${CODENAME} stable"
-    sudo apt-get update && sudo apt-get install docker-ce && pip install docker-compose
+    sudo apt-get update && sudo apt-get install docker-ce && sudo pip install docker-compose
     sudo gpasswd -a "${USER_NAME}" docker
     echo "<< installing docker [end]"
 fi
