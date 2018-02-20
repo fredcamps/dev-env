@@ -75,7 +75,8 @@ echo "<< installing some utilities and deps	 [end]"
 echo "<< reloading confs"
 git submodule update --init
 rsync -rv --exclude=.git "${DIR}/dotfiles/"  "${HOME}" || { exit 1; }
-cp -r "${DIR}/dotfolders/" "${HOME}" || { exit 1; }
+rsync -rv --exclude=.git "${DIR}/dotfolders/" "${HOME}" || { exit 1; }
+systemctl --user start emacsd
 echo "<< reloading confs [end]"
 
 # curl
