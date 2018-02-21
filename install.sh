@@ -66,7 +66,8 @@ sudo apt-get install -y -q aufs-tools \
     snapcraft \
     screen \
     chromium-browser \
-	gimp
+	gimp \
+	gpg2
 echo "<< installing some utilities and deps	 [end]"
 
 # firefox
