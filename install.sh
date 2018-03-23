@@ -38,6 +38,8 @@ sudo apt-get install -y -q aufs-tools \
     ctags \
     tree \
     "linux-headers-$(uname -r)" \
+	libvirt-dev \
+	libvirt-bin \
     libxml2-dev \
     libbz2-dev \
     libmcrypt-dev \
