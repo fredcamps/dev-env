@@ -90,8 +90,8 @@ sudo apt-get build-dep -y curl
 git clone https://github.com/tatsuhiro-t/nghttp2.git "${HOME}/Downloads/nghttp2" || echo "nghttp is already cloned";
 cd "${HOME}/Downloads/nghttp2" || exit 1;
 if [ -f "$(which curl)" ]; then
-	rm -rf "$(which curl)"
-	sudo apt-get purge -y curl
+    rm -rf "$(which curl)"
+    sudo apt-get purge -y curl
 fi
 autoreconf -i && automake && autoconf && ./configure && make && sudo make install
 cd "${HOME}/Downloads" || exit 1;
