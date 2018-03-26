@@ -38,8 +38,8 @@ sudo apt-get install -y -q aufs-tools \
     ctags \
     tree \
     "linux-headers-$(uname -r)" \
-	libvirt-dev \
-	libvirt-bin \
+    libvirt-dev \
+    libvirt-bin \
     libxml2-dev \
     libbz2-dev \
     libmcrypt-dev \
@@ -68,8 +68,8 @@ sudo apt-get install -y -q aufs-tools \
     snapcraft \
     screen \
     chromium-browser \
-	gimp \
-	gpg2
+    gimp \
+    gpg2
 echo "<< installing some utilities and deps	 [end]"
 
 # firefox
@@ -136,6 +136,9 @@ echo "<< installing clang [end]"
 echo "<< installing golang"
 sudo apt install -y golang
 echo "<< installing golang [end]"
+
+# markdown
+sudo apt-get install -y libmarkdown2-dev libmarkdown2 markdown
 
 # node
 if [ ! -f "$(which nvm)" ]; then
