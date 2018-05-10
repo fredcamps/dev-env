@@ -81,6 +81,7 @@ echo "<< reloading confs"
 git submodule update --init
 rsync -rv --exclude=.git "${DIR}/dotfiles/"  "${HOME}" || { exit 1; }
 rsync -rv --exclude=.git "${DIR}/dotfolders/" "${HOME}" || { exit 1; }
+[ -d "${HOME}/dotfolders" ] && rm -rf "${HOME}/dotfolders"
 systemctl --user start emacsd
 echo "<< reloading confs [end]"
 
