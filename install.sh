@@ -24,6 +24,7 @@ sudo apt-get install -y -q aufs-tools \
     build-essential \
     libssl-dev \
     git \
+    git-flow \
     htop \
     iotop \
     vim \
