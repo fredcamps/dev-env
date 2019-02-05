@@ -158,7 +158,8 @@ if [ ! -f "$(which nvm)" ]; then
     wget -qO- "https://raw.githubusercontent.com/creationix/nvm/${NVM_VERSION}/install.sh" | bash
     nvm install v11.9.0
     nvm use 11.9.0
-    npm i -g bash-language-server
+    npm i -g typescript-language-server
+    npm i -g bash-language-server # language server for bash
     echo "<< installing nodejs [end]"
 fi
 
