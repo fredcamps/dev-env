@@ -133,6 +133,15 @@ echo "<< installing python & tools [end]"
 # c/cpp
 echo "<< installing clang"
 sudo apt-get install -y clang clang-format libclang-dev libclang1 global cmake llvm-dev llvm-runtime cde
+sudo git clone --depth=1 --recursive https://github.com/MaskRay/ccls /opt/ccls
+sudo chown $(whoami):$(whoami) -R /opt/ccls
+cd /opt/ccls
+wget -c http://releases.llvm.org/7.0.1/clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-18.04.tar.xz
+tar -vxf clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-18.04.tar.xz
+cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=$PWD/clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04
+cmake --build Release
+sudo cmake --build Release --target install
+cd "${DIR}"
 echo "<< installing clang [end]"
 
 # golang
