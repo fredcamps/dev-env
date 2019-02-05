@@ -70,6 +70,7 @@ sudo apt-get install -y -q aufs-tools \
     screen \
     chromium-browser \
     gimp \
+    direnv \
     gpg2
 echo "<< installing some utilities and deps	 [end]"
 
@@ -125,7 +126,7 @@ fi
 echo "<< installing python & tools"
 sudo apt-get install -y python-pip
 sudo pip install --upgrade pip
-sudo pip install virtualenvwrapper
+sudo pip install virtualenvwrapper pipenv
 git clone git clone git@github.com:pyenv/pyenv.git "{HOME}/.pyenv"
 echo "<< installing python & tools [end]"
 
