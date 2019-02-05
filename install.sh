@@ -132,7 +132,7 @@ echo "<< installing python & tools [end]"
 
 # c/cpp
 echo "<< installing clang"
-sudo apt-get install -y clang clang-format libclang-dev libclang1 global cmake llvm-dev llvm-runtime
+sudo apt-get install -y clang clang-format libclang-dev libclang1 global cmake llvm-dev llvm-runtime cde
 echo "<< installing clang [end]"
 
 # golang
