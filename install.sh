@@ -12,7 +12,7 @@ CURL_VERSION="7.58.0"
 # TIMEZONE="America/Sao_Paulo"
 DIR="$(pwd)"
 
-NVM_VERSION="v0.33.8"
+NVM_VERSION="v0.34.0"
 
 # utils
 echo "<< installing some utilities and deps"
