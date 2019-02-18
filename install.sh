@@ -65,7 +65,8 @@ sudo apt-get install -y -q aufs-tools \
     screen \
     chromium-browser \
     gimp \
-    direnv 
+    direnv \
+    gpgv2
 echo "<< installing some utilities and deps	 [end]"
 
 # firefox
@@ -86,7 +87,7 @@ echo "<< reloading confs [end]"
 
 # c/cpp
 echo "<< installing clang"
-sudo apt-get install -y clang clang-format libclang-dev libclang1 global cmake llvm-dev llvm-runtime cde
+sudo apt-get install -y libncurses5-dev clang-7 clang-format-7 libclang-7-dev libclang1-7 global cmake llvm-dev llvm-runtime cde
 sudo git clone --depth=1 --recursive https://github.com/MaskRay/ccls /opt/ccls
 sudo chown $(whoami):$(whoami) -R /opt/ccls
 cd /opt/ccls
