@@ -66,7 +66,7 @@ sudo apt-get install -y -q aufs-tools \
     chromium-browser \
     gimp \
     direnv \
-    gpgv2
+    gnupg2
 echo "<< installing some utilities and deps	 [end]"
 
 # firefox
