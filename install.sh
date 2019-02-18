@@ -28,7 +28,6 @@ sudo apt-get install -y -q aufs-tools \
     htop \
     iotop \
     vim \
-    emacs-nox \
     libreoffice \
     tmux \
     tmuxinator \
@@ -77,6 +76,9 @@ echo "<< installing some utilities and deps	 [end]"
 # firefox
 # sudo add-apt-repository ppa:mozillateam/ppa
 # sudo apt-get update && apt-get install -y -q firefox-esr
+
+# emacs
+sudo add-apt-repository ppa:kelleyk/emacs && apt-get update && apt-get install emacs26-nox
 
 # dot files
 echo "<< reloading confs"
@@ -146,7 +148,7 @@ echo "<< installing clang [end]"
 
 # golang
 echo "<< installing golang"
-sudo apt install -y golang
+curl -L git.io/govm | python - setup
 echo "<< installing golang [end]"
 
 # markdown
