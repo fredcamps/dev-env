@@ -33,10 +33,10 @@ sudo apt-get install -y -q aufs-tools \
     tmuxinator \
     xclip \
     subversion \
-    python-software-properties \
     python-dev \
     ctags \
     tree \
+    curl \
     "linux-headers-$(uname -r)" \
     libvirt-dev \
     libvirt-bin \
@@ -46,7 +46,6 @@ sudo apt-get install -y -q aufs-tools \
     libreadline-dev \
     libxslt1-dev \
     libicu-dev \
-    libstdc++6-4.7-dev \
     re2c \
     nfs-client \
     cups \
@@ -60,17 +59,13 @@ sudo apt-get install -y -q aufs-tools \
     wget \
     silversearcher-ag \
     markdown \
-    software-properties-common \
     playonlinux \
-    gnome-disk-utility \
-    gparted \
     dosbox \
     snapcraft \
     screen \
     chromium-browser \
     gimp \
-    direnv \
-    gpg2
+    direnv 
 echo "<< installing some utilities and deps	 [end]"
 
 # firefox
@@ -89,26 +84,40 @@ rsync -rv --exclude=.git "${DIR}/dotfolders/" "${HOME}" || { exit 1; }
 systemctl --user start emacsd
 echo "<< reloading confs [end]"
 
-# curl
-echo "<< installing curl"
-sudo apt-get build-dep -y curl
-git clone https://github.com/tatsuhiro-t/nghttp2.git "${HOME}/Downloads/nghttp2" || echo "nghttp is already cloned";
-cd "${HOME}/Downloads/nghttp2" || exit 1;
-if [ -f "$(which curl)" ]; then
-    rm -rf "$(which curl)"
-    sudo apt-get purge -y curl
-fi
-autoreconf -i && automake && autoconf && ./configure && make && sudo make install
-cd "${HOME}/Downloads" || exit 1;
-wget "http://curl.haxx.se/download/curl-${CURL_VERSION}.tar.bz2" && tar -jxvf "curl-${CURL_VERSION}.tar.bz2"
-cd "curl-${CURL_VERSION}" && ./configure --with-nghttp2=/usr/local --with-ssl && make && sudo make install
-sudo ldconfig
-sudo rm -rf "${HOME}/Downloads/nghttp2" "${HOME}/Downloads/curl-${CURL_VERSION}"
-if [ ! -f "$(which curl)" ]; then
-	echo "<< ERROR when install curl" && exit 1;
-fi
+# c/cpp
+echo "<< installing clang"
+sudo apt-get install -y clang clang-format libclang-dev libclang1 global cmake llvm-dev llvm-runtime cde
+sudo git clone --depth=1 --recursive https://github.com/MaskRay/ccls /opt/ccls
+sudo chown $(whoami):$(whoami) -R /opt/ccls
+cd /opt/ccls
+wget -c http://releases.llvm.org/7.0.1/clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-18.04.tar.xz
+tar -vxf clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-18.04.tar.xz
+cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=$PWD/clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04
+cmake --build Release
+sudo cmake --build Release --target install
 cd "${DIR}"
-echo "<< installing curl [end]"
+echo "<< installing clang [end]"
+
+# curl
+# echo "<< installing curl"
+# sudo apt-get build-dep -y curl
+# git clone https://github.com/tatsuhiro-t/nghttp2.git "${HOME}/Downloads/nghttp2" || echo "nghttp is already cloned";
+# cd "${HOME}/Downloads/nghttp2" || exit 1;
+# if [ -f "$(which curl)" ]; then
+#     rm -rf "$(which curl)"
+#     sudo apt-get purge -y curl
+# fi
+# autoreconf -i && automake && autoconf && ./configure && make && sudo make install
+# cd "${HOME}/Downloads" || exit 1;
+# wget "http://curl.haxx.se/download/curl-${CURL_VERSION}.tar.bz2" && tar -jxvf "curl-${CURL_VERSION}.tar.bz2"
+# cd "curl-${CURL_VERSION}" && ./configure --with-nghttp2=/usr/local --with-ssl && make && sudo make install
+# sudo ldconfig
+# sudo rm -rf "${HOME}/Downloads/nghttp2" "${HOME}/Downloads/curl-${CURL_VERSION}"
+# if [ ! -f "$(which curl)" ]; then
+# 	echo "<< ERROR when install curl" && exit 1;
+# fi
+# cd "${DIR}"
+# echo "<< installing curl [end]"
 
 # vim spf-13
 # sh <(curl https://j.mp/spf13-vim3 -L)
@@ -132,23 +141,9 @@ sudo pip install virtualenvwrapper pipenv
 git clone git clone git@github.com:pyenv/pyenv.git "{HOME}/.pyenv"
 echo "<< installing python & tools [end]"
 
-# c/cpp
-echo "<< installing clang"
-sudo apt-get install -y clang clang-format libclang-dev libclang1 global cmake llvm-dev llvm-runtime cde
-sudo git clone --depth=1 --recursive https://github.com/MaskRay/ccls /opt/ccls
-sudo chown $(whoami):$(whoami) -R /opt/ccls
-cd /opt/ccls
-wget -c http://releases.llvm.org/7.0.1/clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-18.04.tar.xz
-tar -vxf clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-18.04.tar.xz
-cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=$PWD/clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04
-cmake --build Release
-sudo cmake --build Release --target install
-cd "${DIR}"
-echo "<< installing clang [end]"
-
 # golang
 echo "<< installing golang"
-curl -L git.io/govm | python - setup
+git clone https://github.com/syndbg/goenv.git ~/.goenv
 echo "<< installing golang [end]"
 
 # markdown
