@@ -8,7 +8,7 @@ CODENAME="$(lsb_release -cs)"
 # DISTRO="${VENDOR}-${CODENAME}"
 USER_NAME="$(whoami)"
 # HOME_PATH="/home/${USER_NAME}"
-CURL_VERSION="7.58.0"
+# CURL_VERSION="7.58.0"
 # TIMEZONE="America/Sao_Paulo"
 DIR="$(pwd)"
 
@@ -139,7 +139,7 @@ echo "<< installing python & tools"
 sudo apt-get install -y python-pip
 sudo pip install --upgrade pip
 sudo pip install virtualenvwrapper pipenv
-git clone git clone git@github.com:pyenv/pyenv.git "{HOME}/.pyenv"
+git clone git@github.com:pyenv/pyenv.git "{HOME}/.pyenv"
 echo "<< installing python & tools [end]"
 
 # golang
@@ -170,7 +170,7 @@ if [ ! -f "$(which rvm)" ]; then
 fi
 
 # java
-sudo apt-get -y install default-jdk
+curl -s "https://get.sdkman.io" | bash
 
 # docker
 if [ ! -f "$(which docker)" ]; then
