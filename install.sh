@@ -125,12 +125,19 @@ echo "<< installing clang [end]"
 
 # shell
 sudo apt-get install shellcheck
-if [ ! -f "$(which zsh)" ]; then
-    echo "<< installing zsh"
-    sudo apt-get install -y zsh
+# if [ ! -f "$(which zsh)" ]; then
+#    echo "<< installing zsh"
+#    sudo apt-get install -y zsh
+#    echo "<< changing shell, maybe it will ask password"
+#    chsh -s /bin/zsh
+#   echo "<< installing zsh [end]"
+# fi
+if [ ! -f "$(which fish)" ]; then
+    echo "<< installing fish"
+    sudo apt-get install -y fish
     echo "<< changing shell, maybe it will ask password"
-    chsh -s /bin/zsh
-    echo "<< installing zsh [end]"
+    chsh -s /bin/fish
+    echo "<< installing fish [end]"
 fi
 
 # http://python-3-patterns-idioms-test.readthedocs.io/en/latest/index.html
