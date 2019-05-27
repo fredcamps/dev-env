@@ -192,6 +192,10 @@ if [ ! -f /opt/vagrant/bin/vagrant ]; then
     echo "<< installing vagrant [end]"
 fi
 
+#keylock indicator
+sudo add-apt-repository ppa:tsbarnes/indicator-keylock
+sudo apt-get install -y indicator-keylock
+
 echo "<< cleaning and removing old packages "
 sudo apt-get autoremove -y
 sudo apt-get autoclean -y
