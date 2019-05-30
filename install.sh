@@ -31,6 +31,8 @@ sudo apt-get install -y -q aufs-tools \
     libreoffice \
     tmux \
     tmuxinator \
+    fonts-powerline \
+    powerline \
     xclip \
     subversion \
     python-dev \
