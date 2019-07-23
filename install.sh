@@ -139,6 +139,16 @@ if [ ! -f "$(which fish)" ]; then
     sudo apt-get install -y fish
     echo "<< changing shell, maybe it will ask password"
     chsh -s /usr/bin/fish
+    curl -L https://get.oh-my.fish | fish
+    omf install cbjohnson
+    omf install colored-man-pages
+    omf install notify
+    omf install nvm
+    omf install pyenv
+    omf install rvm
+    omf install sdk
+    omf install z
+    wget https://gitlab.com/kyb/fish_ssh_agent/raw/master/functions/fish_ssh_agent.fish -P ~/.config/fish/functions/
     echo "<< installing fish [end]"
 fi
 
@@ -162,6 +172,7 @@ sudo apt-get install -y libmarkdown2-dev libmarkdown2 markdown
 # node
 if [ ! -f "$(which nvm)" ]; then
     echo "<< installing nodejs"
+    mkdir -p "${HOME}/.nvm"
     wget -qO- "https://raw.githubusercontent.com/creationix/nvm/${NVM_VERSION}/install.sh" | bash
     nvm install v11.9.0
     nvm use 11.9.0
@@ -172,7 +183,8 @@ fi
 
 # rubysha
 if [ ! -f "$(which rvm)" ]; then
-    echo "<< installing ruby"
+    echo "<< installing ruby"]
+    gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
     curl -sSL https://rvm.io/mpapis.asc | gpg2 --import -
 	curl https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer | bash -s stable --ruby=2.4.1 --gems=bundler,jekyll
     echo "<< installing ruby [end]"
@@ -187,7 +199,7 @@ if [ ! -f "$(which docker)" ]; then
     curl -fsSL https://download.docker.com/linux/${VENDOR}/gpg | sudo apt-key add -
     sudo add-apt-repository \
             "deb [arch=amd64] https://download.docker.com/linux/${VENDOR} ${CODENAME} stable"
-    sudo apt-get update && sudo apt-get install docker-ce && sudo pip install docker-compose
+    sudo apt-get update ; sudo apt-get install docker-ce ; sudo pip install docker-compose
     sudo gpasswd -a "${USER_NAME}" docker
     echo "<< installing docker [end]"
 fi
@@ -195,8 +207,11 @@ fi
 # vagrant
 if [ ! -f /opt/vagrant/bin/vagrant ]; then
     echo "<< installing vagrant"
+    wget -q -O - http://download.virtualbox.org/virtualbox/debian/oracle_vbox_2016.asc | sudo apt-key add -
+    sudo sh -c 'echo "deb http://download.virtualbox.org/virtualbox/debian disco non-free contrib" >> /etc/apt/sources.list.d/virtualbox.org.list' 
     sudo git clone https://github.com/mitchellh/vagrant.git /opt/vagrant/
-    { cd /opt/vagrant || exit 1; } && bundle install && { cd "${DIR}" || exit 1; }
+    sudo chown -R $(whoami):$(whoami) /opt/vagrant
+    cd /opt/vagrant ; bundle install ; cd "${DIR}"
     sudo ln -sf /opt/vagrant/bin/vagrant /usr/local/bin/vagrant
     echo "<< installing vagrant [end]"
 fi
