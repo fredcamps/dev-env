@@ -145,6 +145,7 @@ if [ ! -f "$(which fish)" ]; then
     omf install cbjohnson
     omf install colored-man-pages
     omf install grc
+    omf install license
     omf install notify
     omf install nvm
     omf install pyenv
