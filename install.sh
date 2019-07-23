@@ -78,14 +78,14 @@ echo "<< installing some utilities and deps	 [end]"
 # sudo apt-get update && apt-get install -y -q firefox-esr
 
 # emacs
-sudo add-apt-repository ppa:kelleyk/emacs && apt-get update && apt-get install emacs26-nox
+sudo add-apt-repository ppa:kelleyk/emacs ; apt-get update ; apt-get install emacs26-nox
 
 # dot files
 echo "<< reloading confs"
 git submodule update --init
 rsync -rv --exclude=.git "${DIR}/dotfiles/"  "${HOME}" || { exit 1; }
 rsync -rv --exclude=.git "${DIR}/dotfolders/" "${HOME}" || { exit 1; }
-[ -d "${HOME}/dotfolders" ] && rm -rf "${HOME}/dotfolders"
+[ -d "${HOME}/dotfolders" ] ; rm -rf "${HOME}/dotfolders"
 systemctl --user start emacsd
 echo "<< reloading confs [end]"
 
