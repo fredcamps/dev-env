@@ -150,6 +150,7 @@ if [ ! -f "$(which fish)" ]; then
     omf install pyenv
     omf install rvm
     omf install sdk
+    omf install sudope
     omf install z
     wget https://gitlab.com/kyb/fish_ssh_agent/raw/master/functions/fish_ssh_agent.fish -P ~/.config/fish/functions/
     curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
