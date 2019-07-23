@@ -138,7 +138,7 @@ if [ ! -f "$(which fish)" ]; then
     echo "<< installing fish"
     sudo apt-get install -y fish
     echo "<< changing shell, maybe it will ask password"
-    chsh -s /bin/fish
+    chsh -s /usr/bin/fish
     echo "<< installing fish [end]"
 fi
 
