@@ -148,7 +148,7 @@ echo "<< installing python & tools"
 sudo apt-get install -y python-pip
 sudo pip install --upgrade pip
 sudo pip install virtualenvwrapper pipenv
-git clone git@github.com:pyenv/pyenv.git "{HOME}/.pyenv"
+git clone git@github.com:pyenv/pyenv.git "${HOME}/.pyenv"
 echo "<< installing python & tools [end]"
 
 # golang
