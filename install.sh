@@ -40,6 +40,8 @@ sudo apt-get install -y -q aufs-tools \
     tree \
     curl \
     "linux-headers-$(uname -r)" \
+    libdbus-1-dev \
+    libnotify-dev \
     libvirt-dev \
     libvirt-bin \
     libxml2-dev \
@@ -142,6 +144,7 @@ if [ ! -f "$(which fish)" ]; then
     curl -L https://get.oh-my.fish | fish
     omf install cbjohnson
     omf install colored-man-pages
+    omf install grc
     omf install notify
     omf install nvm
     omf install pyenv
@@ -149,6 +152,9 @@ if [ ! -f "$(which fish)" ]; then
     omf install sdk
     omf install z
     wget https://gitlab.com/kyb/fish_ssh_agent/raw/master/functions/fish_ssh_agent.fish -P ~/.config/fish/functions/
+    curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
+    fisher add franciscolourenco/done
+    wget http://kassiopeia.juls.savba.sk/~garabik/software/grc/grc_1.11.3-1_all.deb ; sudo dpkg -i grc_1.11.3-1_all.deb
     echo "<< installing fish [end]"
 fi
 
