@@ -155,7 +155,9 @@ if [ ! -f "$(which fish)" ]; then
     curl -L --create-dirs -o ~/.config/fish/functions/rvm.fish https://raw.github.com/lunks/fish-nuggets/master/functions/rvm.fish
     echo "rvm default" >> ~/.config/fish/conf.d/rvm.fish
     wget https://gitlab.com/kyb/fish_ssh_agent/raw/master/functions/fish_ssh_agent.fish -P ~/.config/fish/functions/
-    curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
+    curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish 
+    curl -L --create-dirs -o ~/.config/fish/completions/nvm.fish https://raw.githubusercontent.com/FabioAntunes/fish-nvm/master/completions/nvm.fish 
+    # curl -L --create-dirs -o ~/.config/fish/completions/rvm.fish https://
     fisher add franciscolourenco/done
     fisher add edc/bass
     wget http://kassiopeia.juls.savba.sk/~garabik/software/grc/grc_1.11.3-1_all.deb ; sudo dpkg -i grc_1.11.3-1_all.deb
