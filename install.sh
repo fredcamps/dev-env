@@ -70,7 +70,8 @@ sudo apt-get install -y -q aufs-tools \
     chromium-browser \
     gimp \
     direnv \
-    gnupg2
+    gnupg2 \
+    surfraw
 echo "<< installing some utilities and deps	 [end]"
 
 # firefox
