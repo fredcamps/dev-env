@@ -149,10 +149,11 @@ if [ ! -f "$(which fish)" ]; then
     omf install notify
     omf install nvm
     omf install pyenv
-    omf install rvm
     omf install sdk
     omf install sudope
     omf install z
+    curl -L --create-dirs -o ~/.config/fish/functions/rvm.fish https://raw.github.com/lunks/fish-nuggets/master/functions/rvm.fish
+    echo "rvm default" >> ~/.config/fish/conf.d/rvm.fish
     wget https://gitlab.com/kyb/fish_ssh_agent/raw/master/functions/fish_ssh_agent.fish -P ~/.config/fish/functions/
     curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
     fisher add franciscolourenco/done
