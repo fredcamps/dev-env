@@ -170,7 +170,7 @@ fi
 echo "<< installing python & tools"
 sudo apt-get install -y python-pip
 sudo pip install --upgrade pip
-sudo pip install virtualenvwrapper pipenv
+pip install --local pipenv virtualfish virtualenvwrapper
 git clone git@github.com:pyenv/pyenv.git "${HOME}/.pyenv"
 echo "<< installing python & tools [end]"
 
