@@ -69,7 +69,8 @@ sudo apt-get install -y -q aufs-tools \
     gimp \
     direnv \
     gnupg2 \
-    surfraw
+    surfraw \
+    software-properties-common
 echo "<< installing some utilities and deps	 [end]"
 
 # firefox
