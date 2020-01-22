@@ -63,11 +63,9 @@ sudo apt-get install -y -q aufs-tools \
     wget \
     silversearcher-ag \
     markdown \
-    playonlinux \
     dosbox \
     snapcraft \
     screen \
-    chromium-browser \
     gimp \
     direnv \
     gnupg2 \
@@ -78,8 +76,14 @@ echo "<< installing some utilities and deps	 [end]"
 # sudo add-apt-repository ppa:mozillateam/ppa
 # sudo apt-get update && apt-get install -y -q firefox-esr
 
+# brave
+# curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
+# echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list
+# sudo apt update
+# sudo apt install brave-browser
+
 # emacs
-sudo add-apt-repository ppa:kelleyk/emacs ; apt-get update ; apt-get install emacs26-nox
+sudo add-apt-repository ppa:kelleyk/emacs && apt-get update && apt-get install emacs26-nox
 
 # dot files
 echo "<< reloading confs"
@@ -103,27 +107,6 @@ cmake --build Release
 sudo cmake --build Release --target install
 cd "${DIR}"
 echo "<< installing clang [end]"
-
-# curl
-# echo "<< installing curl"
-# sudo apt-get build-dep -y curl
-# git clone https://github.com/tatsuhiro-t/nghttp2.git "${HOME}/Downloads/nghttp2" || echo "nghttp is already cloned";
-# cd "${HOME}/Downloads/nghttp2" || exit 1;
-# if [ -f "$(which curl)" ]; then
-#     rm -rf "$(which curl)"
-#     sudo apt-get purge -y curl
-# fi
-# autoreconf -i && automake && autoconf && ./configure && make && sudo make install
-# cd "${HOME}/Downloads" || exit 1;
-# wget "http://curl.haxx.se/download/curl-${CURL_VERSION}.tar.bz2" && tar -jxvf "curl-${CURL_VERSION}.tar.bz2"
-# cd "curl-${CURL_VERSION}" && ./configure --with-nghttp2=/usr/local --with-ssl && make && sudo make install
-# sudo ldconfig
-# sudo rm -rf "${HOME}/Downloads/nghttp2" "${HOME}/Downloads/curl-${CURL_VERSION}"
-# if [ ! -f "$(which curl)" ]; then
-# 	echo "<< ERROR when install curl" && exit 1;
-# fi
-# cd "${DIR}"
-# echo "<< installing curl [end]"
 
 # vim spf-13
 # sh <(curl https://j.mp/spf13-vim3 -L)
@@ -168,9 +151,8 @@ fi
 # http://python-3-patterns-idioms-test.readthedocs.io/en/latest/index.html
 # python
 echo "<< installing python & tools"
-sudo apt-get install -y python-pip
-sudo pip install --upgrade pip
-pip install --local pipenv virtualfish virtualenvwrapper
+sudo apt-get install -y python3-pip
+pip3 install --user --upgrade pip pipenv virtualfish virtualenvwrapper
 git clone git@github.com:pyenv/pyenv.git "${HOME}/.pyenv"
 echo "<< installing python & tools [end]"
 
