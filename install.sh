@@ -10,7 +10,7 @@ DIR="$(pwd)"
 
 sudo apt-get update
 sudo apt-get install linux-lowlatency \
-     linux-lowlatency-tools \
+     linux-tools-lowlatency \
      git \
      software-properties-common \
      bison \
@@ -20,7 +20,7 @@ sudo apt-get install linux-lowlatency \
      libssl-dev \
      htop \
      iotop \
-     xcliop \
+     xclip \
      tmux \
      htop \
      iotop \
