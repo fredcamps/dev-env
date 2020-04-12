@@ -3,6 +3,8 @@
 # Author : Fred Campos fredcamps/dev-env
 # Script for installing my env apps
 #
+VAGRANT_VERSION="2.2.7"
+NVM_VERSION="v0.35.3"
 VENDOR="$(lsb_release -i | awk '{print $3}' | awk '{print tolower($0)}')"
 CODENAME="$(lsb_release -cs)"
 USER_NAME="$(whoami)"
@@ -11,6 +13,7 @@ DIR="$(pwd)"
 sudo apt-get update
 sudo apt-get install linux-lowlatency \
      linux-tools-lowlatency \
+     xserver-xorg-core \
      git \
      software-properties-common \
      bison \
@@ -27,6 +30,7 @@ sudo apt-get install linux-lowlatency \
      silversearcher-ag \
      xchm \
      snapcraft \
+     snapd \
      markdown \
      gimp \
      ctags \
@@ -47,7 +51,7 @@ sudo apt update
 sudo apt install brave-browser
 
 # emacs
-sudo add-apt-repository ppa:kelleyk/emacs && apt-get update && apt-get install emacs26-nox
+sudo add-apt-repository ppa:kelleyk/emacs && sudo apt-get update && sudo apt-get install emacs26-nox
 
 echo "<< reloading confs"
 git submodule update --init
@@ -55,14 +59,14 @@ git submodule update --recursive --remote
 rsync -rv --exclude=.git "${DIR}/dotfiles/"  "${HOME}" || { exit 1; }
 rsync -rv --exclude=.git "${DIR}/dotfolders/" "${HOME}" || { exit 1; }
 [ -d "${HOME}/dotfolders" ] ; rm -rf "${HOME}/dotfolders"
-systemctl --user start emacsd
+systemctl --user enable emacsd ; systemctl --user status emacsd.service
 echo "<< reloading confs [end]"
 
 # c/cpp
 echo "<< installing clang"
 sudo apt-get install -y libncurses5-dev clang-7 clang-format-7 libclang-7-dev libclang1-7 global cmake llvm-dev llvm-runtime cde
 sudo git clone --depth=1 --recursive https://github.com/MaskRay/ccls /opt/ccls
-sudo chown $(whoami):$(whoami) -R /opt/ccls
+sudo chown "${USER_NAME}:${USER_NAME}" -R /opt/ccls
 cd /opt/ccls
 wget -c http://releases.llvm.org/7.0.1/clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-18.04.tar.xz
 tar -vxf clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-18.04.tar.xz
@@ -72,49 +76,16 @@ sudo cmake --build Release --target install
 cd "${DIR}"
 echo "<< installing clang [end]"
 
-# shell
-sudo apt-get install shellcheck
+# rust
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
-# if [ ! -f "$(which zsh)" ]; then
-#    echo "<< installing zsh"
-#    sudo apt-get install -y zsh
-#    echo "<< changing shell, maybe it will ask password"
-#    chsh -s /bin/zsh
-#   echo "<< installing zsh [end]"
-# fi
+# java
+curl -s "https://get.sdkman.io" | bash
 
-# fish shell
-if [ ! -f "$(which fish)" ]; then
-    echo "<< installing fish"
-    sudo apt-get install -y fish
-    echo "<< changing shell, maybe it will ask password"
-    chsh -s /usr/bin/fish
-    curl -L https://get.oh-my.fish | fish
-    omf install cbjohnson
-    omf install colored-man-pages
-    omf install grc
-    omf install license
-    omf install notify
-    omf install nvm
-    omf install pyenv
-    omf install sdk
-    omf install sudope
-    omf install z
-    curl -L --create-dirs -o ~/.config/fish/functions/rvm.fish https://raw.github.com/lunks/fish-nuggets/master/functions/rvm.fish
-    echo "rvm default" >> ~/.config/fish/conf.d/rvm.fish
-    wget https://gitlab.com/kyb/fish_ssh_agent/raw/master/functions/fish_ssh_agent.fish -P ~/.config/fish/functions/
-    curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish 
-    curl -L --create-dirs -o ~/.config/fish/completions/nvm.fish https://raw.githubusercontent.com/FabioAntunes/fish-nvm/master/completions/nvm.fish 
-    # curl -L --create-dirs -o ~/.config/fish/completions/rvm.fish https://
-    fisher add franciscolourenco/done
-    fisher add edc/bass
-    wget http://kassiopeia.juls.savba.sk/~garabik/software/grc/grc_1.11.3-1_all.deb ; sudo dpkg -i grc_1.11.3-1_all.deb
-    echo "<< installing fish [end]"
-fi
-
+# python
 echo "<< installing python & tools"
-sudo apt-get install -y python3-pip python3-dev
-pip3 install --user --upgrade pip pipenv virtualfish virtualenvwrapper
+sudo apt-get --reinstall install  python3-setuptools python3-wheel python3-pip python3-pip python3-dev python-wheel python-pip python-setuptools python-dev
+pip install --user --upgrade pip pipenv virtualfish virtualenvwrapper
 git clone git@github.com:pyenv/pyenv.git "${HOME}/.pyenv"
 echo "<< installing python & tools [end]"
 
@@ -128,8 +99,9 @@ if [ ! -f "$(which nvm)" ]; then
     echo "<< installing nodejs"
     mkdir -p "${HOME}/.nvm"
     wget -qO- "https://raw.githubusercontent.com/creationix/nvm/${NVM_VERSION}/install.sh" | bash
-    nvm install lts
-    nvm use lts
+    source "${HOME}/.bashrc"
+    nvm install "$(nvm ls-remote  | grep -i lts | tail -n 1 | awk '{ print $1 }')"
+    nvm use "$(nvm ls-remote  | grep -i lts | tail -n 1 | awk '{ print $1 }')"
     npm i -g typescript-language-server
     npm i -g bash-language-server # language server for bash
     echo "<< installing nodejs [end]"
@@ -140,33 +112,70 @@ if [ ! -f "$(which rvm)" ]; then
     echo "<< installing ruby"]
     gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
     curl -sSL https://rvm.io/mpapis.asc | gpg2 --import -
-	curl https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer | bash -s stable --ruby=2.4.1 --gems=bundler,jekyll
+    curl https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer | bash -s stable --gems=bundler
+    source "${HOME}/.rvm/scripts/rvm" && rvm use 
     echo "<< installing ruby [end]"
 fi
 
-# java
-curl -s "https://get.sdkman.io" | bash
+# shell
+sudo apt-get install shellcheck
+
+# if [ ! -f "$(which zsh)" ]; then
+#    echo "<< installing zsh"
+#    sudo apt-get install -y zsh
+#    echo "<< installing zsh [end]"
+# fi
+
+# fish shell
+if [ ! -f "$(which fish)" ]; then
+    echo "<< installing fish"
+    sudo apt-get install -y fish
+    echo "<< changing shell, maybe it will ask password"
+    curl -L https://get.oh-my.fish | fish
+    fish -c 'omf install cbjohnson'
+    fish -c 'omf install colored-man-pages'
+    fish -c 'omf install grc'
+    fish -c 'omf install license'
+    fish -c 'omf install notify'
+    fish -c 'omf install nvm'
+    fish -c 'omf install pyenv'
+    fish -c 'omf install sdk'
+    fish -c 'omf install sudope'
+    fish -c 'omf install z'
+    curl -L --create-dirs -o ~/.config/fish/functions/rvm.fish https://raw.github.com/lunks/fish-nuggets/master/functions/rvm.fish
+    echo "rvm default" >> ~/.config/fish/conf.d/rvm.fish
+    wget https://gitlab.com/kyb/fish_ssh_agent/raw/master/functions/fish_ssh_agent.fish -P ~/.config/fish/functions/
+    curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish 
+    curl -L --create-dirs -o ~/.config/fish/completions/nvm.fish https://raw.githubusercontent.com/FabioAntunes/fish-nvm/master/completions/nvm.fish 
+    # curl -L --create-dirs -o ~/.config/fish/completions/rvm.fish https://
+    fish -c 'fisher add franciscolourenco/done'
+    fish -c 'fisher add edc/bass'
+    wget http://kassiopeia.juls.savba.sk/~garabik/software/grc/grc_1.11.3-1_all.deb && sudo dpkg -i grc_1.11.3-1_all.deb && rm -rf grc_1.11.3-1_all.deb
+    echo "<< installing fish [end]"
+fi
 
 # docker
 if [ ! -f "$(which docker)" ]; then
     echo "<< installing docker"
-    curl -fsSL https://download.docker.com/linux/${VENDOR}/gpg | sudo apt-key add -
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
     sudo add-apt-repository \
-            "deb [arch=amd64] https://download.docker.com/linux/${VENDOR} ${CODENAME} stable"
-    sudo apt-get update ; sudo apt-get install docker-ce ; sudo pip install docker-compose
+	 deb [arch=amd64] https://download.docker.com/linux/ubuntu $(. /etc/os-release; echo "$UBUNTU_CODENAME") stable
+    # sudo add-apt-repository \
+    # 	 deb [arch=amd64] https://download.docker.com/linux/ubuntu disco stable
+    # sudo apt-get update ; sudo apt-get install docker-ce ;
+    pip3 install --user docker-compose
+    sudo apt-get update ; sudo apt-get install docker.io
     sudo gpasswd -a "${USER_NAME}" docker
     echo "<< installing docker [end]"
 fi
 
 # vagrant
-if [ ! -f /opt/vagrant/bin/vagrant ]; then
+if [ ! -f "$(which vagrant)" ]; then
     echo "<< installing vagrant"
-    wget -q -O - http://download.virtualbox.org/virtualbox/debian/oracle_vbox_2016.asc | sudo apt-key add -
-    sudo sh -c 'echo "deb http://download.virtualbox.org/virtualbox/debian disco non-free contrib" >> /etc/apt/sources.list.d/virtualbox.org.list' 
-    sudo git clone https://github.com/mitchellh/vagrant.git /opt/vagrant/
-    sudo chown -R $(whoami):$(whoami) /opt/vagrant
-    cd /opt/vagrant ; bundle install ; cd "${DIR}"
-    sudo ln -sf /opt/vagrant/bin/vagrant /usr/local/bin/vagrant
+    sudo apt-get install -y \
+	 virtualbox virtualbox-ext-pack virtualbox-dkms virtualbox-guest-x11 virtualbox-guest-source virtualbox-guest-utils virtualbox-qt
+    wget "https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_$(uname -p).deb" && \
+	sudo dpkg -i "vagrant_${VAGRANT_VERSION}_$(uname -p).deb" && rm -rf "vagrant_${VAGRANT_VERSION}_$(uname -p).deb"
     echo "<< installing vagrant [end]"
 fi
 
@@ -178,5 +187,17 @@ echo "<< cleaning and removing old packages "
 sudo apt-get autoremove -y
 sudo apt-get autoclean -y
 echo "<< cleaning and removing old packages [end]"
+
+
+
+
+
+
+
+
+
+
+
+
 
 
