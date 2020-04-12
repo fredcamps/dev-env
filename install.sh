@@ -5,83 +5,47 @@
 #
 VENDOR="$(lsb_release -i | awk '{print $3}' | awk '{print tolower($0)}')"
 CODENAME="$(lsb_release -cs)"
-# DISTRO="${VENDOR}-${CODENAME}"
 USER_NAME="$(whoami)"
-# HOME_PATH="/home/${USER_NAME}"
-# CURL_VERSION="7.58.0"
-# TIMEZONE="America/Sao_Paulo"
 DIR="$(pwd)"
 
-NVM_VERSION="v0.34.0"
-
-# utils
-echo "<< installing some utilities and deps"
 sudo apt-get update
-sudo apt-get install -y -q aufs-tools \
-    bison \
-    autoconf \
-    automake \
-    build-essential \
-    libssl-dev \
-    git \
-    git-flow \
-    htop \
-    iotop \
-    vim \
-    libreoffice \
-    tmux \
-    tmuxinator \
-    xclip \
-    subversion \
-    python-dev \
-    ctags \
-    tree \
-    curl \
-    "linux-headers-$(uname -r)" \
-    libvirt-dev \
-    libvirt-bin \
-    libxml2-dev \
-    libbz2-dev \
-    libmcrypt-dev \
-    libreadline-dev \
-    libxslt1-dev \
-    libicu-dev \
-    re2c \
-    nfs-client \
-    cups \
-    libsmbclient \
-    xfce4-whiskermenu-plugin \
-    xfce4-indicator-plugin \
-    xfce4-goodies \
-    libmysqlclient-dev \
-    flashplugin-installer \
-    xchm \
-    wget \
-    silversearcher-ag \
-    markdown \
-    playonlinux \
-    dosbox \
-    snapcraft \
-    screen \
-    chromium-browser \
-    gimp \
-    direnv \
-    gnupg2
-echo "<< installing some utilities and deps	 [end]"
-
-# firefox
-# sudo add-apt-repository ppa:mozillateam/ppa
-# sudo apt-get update && apt-get install -y -q firefox-esr
-
+sudo apt-get install linux-lowlatency \
+     linux-lowlatency-tools \
+     git \
+     software-properties-common \
+     bison \
+     autoconf \
+     automake \
+     build-essential \
+     libssl-dev \
+     htop \
+     iotop \
+     xcliop \
+     tmux \
+     htop \
+     iotop \
+     silversearcher-ag \
+     xchm \
+     snapcraft \
+     markdown \
+     gimp \
+     ctags \
+     tree \
+     libxml2-dev \
+     libbz2-dev \
+     libmcrypt-dev \
+     libreadline-dev \
+     libxslt1-dev \
+     libicu-dev \
+     libdbus-1-dev
 # emacs
 sudo add-apt-repository ppa:kelleyk/emacs && apt-get update && apt-get install emacs26-nox
 
-# dot files
 echo "<< reloading confs"
 git submodule update --init
 rsync -rv --exclude=.git "${DIR}/dotfiles/"  "${HOME}" || { exit 1; }
 rsync -rv --exclude=.git "${DIR}/dotfolders/" "${HOME}" || { exit 1; }
-[ -d "${HOME}/dotfolders" ] && rm -rf "${HOME}/dotfolders"
+[ -d "${HOME}/dotfolders" ] ; rm -rf "${HOME}/dotfolders"
 systemctl --user start emacsd
 echo "<< reloading confs [end]"
 
@@ -99,47 +63,42 @@ sudo cmake --build Release --target install
 cd "${DIR}"
 echo "<< installing clang [end]"
 
-# curl
-# echo "<< installing curl"
-# sudo apt-get build-dep -y curl
-# git clone https://github.com/tatsuhiro-t/nghttp2.git "${HOME}/Downloads/nghttp2" || echo "nghttp is already cloned";
-# cd "${HOME}/Downloads/nghttp2" || exit 1;
-# if [ -f "$(which curl)" ]; then
-#     rm -rf "$(which curl)"
-#     sudo apt-get purge -y curl
-# fi
-# autoreconf -i && automake && autoconf && ./configure && make && sudo make install
-# cd "${HOME}/Downloads" || exit 1;
-# wget "http://curl.haxx.se/download/curl-${CURL_VERSION}.tar.bz2" && tar -jxvf "curl-${CURL_VERSION}.tar.bz2"
-# cd "curl-${CURL_VERSION}" && ./configure --with-nghttp2=/usr/local --with-ssl && make && sudo make install
-# sudo ldconfig
-# sudo rm -rf "${HOME}/Downloads/nghttp2" "${HOME}/Downloads/curl-${CURL_VERSION}"
-# if [ ! -f "$(which curl)" ]; then
-# 	echo "<< ERROR when install curl" && exit 1;
-# fi
-# cd "${DIR}"
-# echo "<< installing curl [end]"
-
-# vim spf-13
-# sh <(curl https://j.mp/spf13-vim3 -L)
-
 # shell
 sudo apt-get install shellcheck
-if [ ! -f "$(which zsh)" ]; then
-    echo "<< installing zsh"
-    sudo apt-get install -y zsh
+
+# fish shell
+if [ ! -f "$(which fish)" ]; then
+    echo "<< installing fish"
+    sudo apt-get install -y fish
     echo "<< changing shell, maybe it will ask password"
-    chsh -s /bin/zsh
-    echo "<< installing zsh [end]"
+    chsh -s /usr/bin/fish
+    curl -L https://get.oh-my.fish | fish
+    omf install cbjohnson
+    omf install colored-man-pages
+    omf install grc
+    omf install license
+    omf install notify
+    omf install nvm
+    omf install pyenv
+    omf install sdk
+    omf install sudope
+    omf install z
+    curl -L --create-dirs -o ~/.config/fish/functions/rvm.fish https://raw.github.com/lunks/fish-nuggets/master/functions/rvm.fish
+    echo "rvm default" >> ~/.config/fish/conf.d/rvm.fish
+    wget https://gitlab.com/kyb/fish_ssh_agent/raw/master/functions/fish_ssh_agent.fish -P ~/.config/fish/functions/
+    curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish 
+    curl -L --create-dirs -o ~/.config/fish/completions/nvm.fish https://raw.githubusercontent.com/FabioAntunes/fish-nvm/master/completions/nvm.fish 
+    # curl -L --create-dirs -o ~/.config/fish/completions/rvm.fish https://
+    fisher add franciscolourenco/done
+    fisher add edc/bass
+    wget http://kassiopeia.juls.savba.sk/~garabik/software/grc/grc_1.11.3-1_all.deb ; sudo dpkg -i grc_1.11.3-1_all.deb
+    echo "<< installing fish [end]"
 fi
 
-# http://python-3-patterns-idioms-test.readthedocs.io/en/latest/index.html
-# python
 echo "<< installing python & tools"
-sudo apt-get install -y python-pip
-sudo pip install --upgrade pip
-sudo pip install virtualenvwrapper pipenv
-git clone git@github.com:pyenv/pyenv.git "{HOME}/.pyenv"
+sudo apt-get install -y python3-pip python3-dev
+pip3 install --user --upgrade pip pipenv virtualfish virtualenvwrapper
+git clone git@github.com:pyenv/pyenv.git "${HOME}/.pyenv"
 echo "<< installing python & tools [end]"
 
 # golang
@@ -147,15 +106,13 @@ echo "<< installing golang"
 git clone https://github.com/syndbg/goenv.git ~/.goenv
 echo "<< installing golang [end]"
 
-# markdown
-sudo apt-get install -y libmarkdown2-dev libmarkdown2 markdown
-
-# node
+# javascript 
 if [ ! -f "$(which nvm)" ]; then
     echo "<< installing nodejs"
+    mkdir -p "${HOME}/.nvm"
     wget -qO- "https://raw.githubusercontent.com/creationix/nvm/${NVM_VERSION}/install.sh" | bash
-    nvm install v11.9.0
-    nvm use 11.9.0
+    nvm install lts
+    nvm use lts
     npm i -g typescript-language-server
     npm i -g bash-language-server # language server for bash
     echo "<< installing nodejs [end]"
@@ -163,7 +120,8 @@ fi
 
 # rubysha
 if [ ! -f "$(which rvm)" ]; then
-    echo "<< installing ruby"
+    echo "<< installing ruby"]
+    gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
     curl -sSL https://rvm.io/mpapis.asc | gpg2 --import -
 	curl https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer | bash -s stable --ruby=2.4.1 --gems=bundler,jekyll
     echo "<< installing ruby [end]"
@@ -178,7 +136,7 @@ if [ ! -f "$(which docker)" ]; then
     curl -fsSL https://download.docker.com/linux/${VENDOR}/gpg | sudo apt-key add -
     sudo add-apt-repository \
             "deb [arch=amd64] https://download.docker.com/linux/${VENDOR} ${CODENAME} stable"
-    sudo apt-get update && sudo apt-get install docker-ce && sudo pip install docker-compose
+    sudo apt-get update ; sudo apt-get install docker-ce ; sudo pip install docker-compose
     sudo gpasswd -a "${USER_NAME}" docker
     echo "<< installing docker [end]"
 fi
@@ -186,13 +144,23 @@ fi
 # vagrant
 if [ ! -f /opt/vagrant/bin/vagrant ]; then
     echo "<< installing vagrant"
+    wget -q -O - http://download.virtualbox.org/virtualbox/debian/oracle_vbox_2016.asc | sudo apt-key add -
+    sudo sh -c 'echo "deb http://download.virtualbox.org/virtualbox/debian disco non-free contrib" >> /etc/apt/sources.list.d/virtualbox.org.list' 
     sudo git clone https://github.com/mitchellh/vagrant.git /opt/vagrant/
-    { cd /opt/vagrant || exit 1; } && bundle install && { cd "${DIR}" || exit 1; }
+    sudo chown -R $(whoami):$(whoami) /opt/vagrant
+    cd /opt/vagrant ; bundle install ; cd "${DIR}"
     sudo ln -sf /opt/vagrant/bin/vagrant /usr/local/bin/vagrant
     echo "<< installing vagrant [end]"
 fi
+
+
+#keylock indicator
+sudo add-apt-repository ppa:tsbarnes/indicator-keylock
+sudo apt-get install -y indicator-keylock
 
 echo "<< cleaning and removing old packages "
 sudo apt-get autoremove -y
 sudo apt-get autoclean -y
 echo "<< cleaning and removing old packages [end]"
+
+
