@@ -13,3 +13,9 @@
 [submodule "dotfiles"]
 	path = dotfiles
 	url = git@gist.github.com:11fc6cc5f08238a98bb95e9fb012748a.git
+[submodule "dotfolders/.config/fish/functions"]
+	path = dotfolders/.config/fish/functions
+	url = git@gist.github.com:4aecdcc16769c84b605b053ca39ef8e8.git
+[submodule "dotfolders/.config/fish/conf.d"]
+	path = dotfolders/.config/fish/conf.d
+	url = git@gist.github.com:d1721de33ce8371e5e1e586a0dee5a8a.git
