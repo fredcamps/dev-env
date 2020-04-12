@@ -38,6 +38,14 @@ sudo apt-get install linux-lowlatency \
      libxslt1-dev \
      libicu-dev \
      libdbus-1-dev
+echo "<< installing some utilities and deps	 [end]"
+
+# brave
+curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
+echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list
+sudo apt update
+sudo apt install brave-browser
+
 # emacs
 sudo add-apt-repository ppa:kelleyk/emacs && apt-get update && apt-get install emacs26-nox
 
@@ -65,6 +73,14 @@ echo "<< installing clang [end]"
 
 # shell
 sudo apt-get install shellcheck
+
+# if [ ! -f "$(which zsh)" ]; then
+#    echo "<< installing zsh"
+#    sudo apt-get install -y zsh
+#    echo "<< changing shell, maybe it will ask password"
+#    chsh -s /bin/zsh
+#   echo "<< installing zsh [end]"
+# fi
 
 # fish shell
 if [ ! -f "$(which fish)" ]; then
@@ -152,7 +168,6 @@ if [ ! -f /opt/vagrant/bin/vagrant ]; then
     sudo ln -sf /opt/vagrant/bin/vagrant /usr/local/bin/vagrant
     echo "<< installing vagrant [end]"
 fi
-
 
 #keylock indicator
 sudo add-apt-repository ppa:tsbarnes/indicator-keylock
