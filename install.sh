@@ -51,6 +51,7 @@ sudo add-apt-repository ppa:kelleyk/emacs && apt-get update && apt-get install e
 
 echo "<< reloading confs"
 git submodule update --init
+git submodule update --recursive --remote
 rsync -rv --exclude=.git "${DIR}/dotfiles/"  "${HOME}" || { exit 1; }
 rsync -rv --exclude=.git "${DIR}/dotfolders/" "${HOME}" || { exit 1; }
 [ -d "${HOME}/dotfolders" ] ; rm -rf "${HOME}/dotfolders"
