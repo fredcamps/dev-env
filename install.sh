@@ -5,8 +5,6 @@
 #
 VAGRANT_VERSION="2.2.7"
 NVM_VERSION="v0.35.3"
-VENDOR="$(lsb_release -i | awk '{print $3}' | awk '{print tolower($0)}')"
-CODENAME="$(lsb_release -cs)"
 USER_NAME="$(whoami)"
 DIR="$(pwd)"
 
@@ -160,7 +158,7 @@ if [ ! -f "$(which docker)" ]; then
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
     sudo su -c "echo \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(. /etc/os-release; echo $UBUNTU_CODENAME) stable\" > \
     	       /etc/apt/sources.list.d/docker-releases.list"
-    # sudo su -c "echo \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release) stable\" > \
+    # sudo su -c "echo \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\" > \
     # 	       /etc/apt/sources.list.d/docker-releases.list"
     sudo apt-get update ; sudo apt-get install docker-ce ;
     sudo gpasswd -a "${USER_NAME}" docker
