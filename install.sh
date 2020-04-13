@@ -84,8 +84,8 @@ curl -s "https://get.sdkman.io" | bash
 
 # python
 echo "<< installing python & tools"
-sudo apt-get --reinstall install  python3-setuptools python3-wheel python3-pip python3-pip python3-dev python-wheel python-pip python-setuptools python-dev
-pip install --user --upgrade pip pipenv virtualfish virtualenvwrapper
+sudo apt-get install --reinstall python3-dev python3-pip python3-setuptools python3-wheel
+sudo pip3 install --upgrade virtualenvwrapper virtualfish pipenv pip
 git clone git@github.com:pyenv/pyenv.git "${HOME}/.pyenv"
 echo "<< installing python & tools [end]"
 
@@ -158,14 +158,13 @@ fi
 if [ ! -f "$(which docker)" ]; then
     echo "<< installing docker"
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    sudo add-apt-repository \
-	 deb [arch=amd64] https://download.docker.com/linux/ubuntu $(. /etc/os-release; echo "$UBUNTU_CODENAME") stable
-    # sudo add-apt-repository \
-    # 	 deb [arch=amd64] https://download.docker.com/linux/ubuntu disco stable
-    # sudo apt-get update ; sudo apt-get install docker-ce ;
-    pip3 install --user docker-compose
-    sudo apt-get update ; sudo apt-get install docker.io
+    sudo su -c "echo \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(. /etc/os-release; echo $UBUNTU_CODENAME) stable\" > \
+    	       /etc/apt/sources.list.d/docker-releases.list"
+    # sudo su -c "echo \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release) stable\" > \
+    # 	       /etc/apt/sources.list.d/docker-releases.list"
+    sudo apt-get update ; sudo apt-get install docker-ce ;
     sudo gpasswd -a "${USER_NAME}" docker
+    sudo pip3 install docker-compose
     echo "<< installing docker [end]"
 fi
 
