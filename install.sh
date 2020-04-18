@@ -40,7 +40,10 @@ sudo apt-get install linux-lowlatency \
      libxslt1-dev \
      libicu-dev \
      libdbus-1-dev
-echo "<< installing some utilities and deps	 [end]"
+echo "<< installing some utilities and deps  [end]"
+
+# clipboard history for gnome and derivatives
+sudo apt-get install -y libgpaste-dev
 
 # brave
 curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
@@ -92,7 +95,7 @@ echo "<< installing golang"
 git clone https://github.com/syndbg/goenv.git ~/.goenv
 echo "<< installing golang [end]"
 
-# javascript 
+# javascript
 if [ ! -f "$(which nvm)" ]; then
     echo "<< installing nodejs"
     mkdir -p "${HOME}/.nvm"
@@ -111,7 +114,7 @@ if [ ! -f "$(which rvm)" ]; then
     gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
     curl -sSL https://rvm.io/mpapis.asc | gpg2 --import -
     curl https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer | bash -s stable --gems=bundler
-    source "${HOME}/.rvm/scripts/rvm" && rvm use 
+    source "${HOME}/.rvm/scripts/rvm" && rvm use
     echo "<< installing ruby [end]"
 fi
 
@@ -143,8 +146,8 @@ if [ ! -f "$(which fish)" ]; then
     curl -L --create-dirs -o ~/.config/fish/functions/rvm.fish https://raw.github.com/lunks/fish-nuggets/master/functions/rvm.fish
     echo "rvm default" >> ~/.config/fish/conf.d/rvm.fish
     wget https://gitlab.com/kyb/fish_ssh_agent/raw/master/functions/fish_ssh_agent.fish -P ~/.config/fish/functions/
-    curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish 
-    curl -L --create-dirs -o ~/.config/fish/completions/nvm.fish https://raw.githubusercontent.com/FabioAntunes/fish-nvm/master/completions/nvm.fish 
+    curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
+    curl -L --create-dirs -o ~/.config/fish/completions/nvm.fish https://raw.githubusercontent.com/FabioAntunes/fish-nvm/master/completions/nvm.fish
     # curl -L --create-dirs -o ~/.config/fish/completions/rvm.fish https://
     fish -c 'fisher add franciscolourenco/done'
     fish -c 'fisher add edc/bass'
@@ -157,9 +160,9 @@ if [ ! -f "$(which docker)" ]; then
     echo "<< installing docker"
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
     sudo su -c "echo \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(. /etc/os-release; echo $UBUNTU_CODENAME) stable\" > \
-    	       /etc/apt/sources.list.d/docker-releases.list"
+               /etc/apt/sources.list.d/docker-releases.list"
     # sudo su -c "echo \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\" > \
-    # 	       /etc/apt/sources.list.d/docker-releases.list"
+    #          /etc/apt/sources.list.d/docker-releases.list"
     sudo apt-get update ; sudo apt-get install docker-ce ;
     sudo gpasswd -a "${USER_NAME}" docker
     sudo pip3 install docker-compose
@@ -170,9 +173,9 @@ fi
 if [ ! -f "$(which vagrant)" ]; then
     echo "<< installing vagrant"
     sudo apt-get install -y \
-	 virtualbox virtualbox-ext-pack virtualbox-dkms virtualbox-guest-x11 virtualbox-guest-source virtualbox-guest-utils virtualbox-qt
+     virtualbox virtualbox-ext-pack virtualbox-dkms virtualbox-guest-x11 virtualbox-guest-source virtualbox-guest-utils virtualbox-qt
     wget "https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_$(uname -p).deb" && \
-	sudo dpkg -i "vagrant_${VAGRANT_VERSION}_$(uname -p).deb" && rm -rf "vagrant_${VAGRANT_VERSION}_$(uname -p).deb"
+    sudo dpkg -i "vagrant_${VAGRANT_VERSION}_$(uname -p).deb" && rm -rf "vagrant_${VAGRANT_VERSION}_$(uname -p).deb"
     echo "<< installing vagrant [end]"
 fi
 
@@ -184,17 +187,3 @@ echo "<< cleaning and removing old packages "
 sudo apt-get autoremove -y
 sudo apt-get autoclean -y
 echo "<< cleaning and removing old packages [end]"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
