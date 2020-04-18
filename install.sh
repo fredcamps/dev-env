@@ -45,6 +45,9 @@ echo "<< installing some utilities and deps  [end]"
 # clipboard history for gnome and derivatives
 sudo apt-get install -y libgpaste-dev
 
+# autoload env vars from .envrc
+sudo apt-get install -y direnv
+
 # brave
 curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
 echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list
@@ -131,7 +134,6 @@ sudo apt-get install shellcheck
 if [ ! -f "$(which fish)" ]; then
     echo "<< installing fish"
     sudo apt-get install -y fish
-    echo "<< changing shell, maybe it will ask password"
     curl -L https://get.oh-my.fish | fish
     fish -c 'omf install cbjohnson'
     fish -c 'omf install colored-man-pages'
