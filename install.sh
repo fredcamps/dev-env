@@ -42,6 +42,12 @@ sudo apt-get install linux-lowlatency \
      libdbus-1-dev
 echo "<< installing some utilities and deps  [end]"
 
+# install android emulator
+sudo add-apt-repository ppa:morphis/anbox-support
+sudo apt-get update
+sudo apt-get install -y anbox-modules-dkms
+snap install --beta --devmode anbox
+
 # clipboard history for gnome and derivatives
 sudo apt-get install -y libgpaste-dev
 
