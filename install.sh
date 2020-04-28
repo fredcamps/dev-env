@@ -47,6 +47,8 @@ sudo add-apt-repository ppa:morphis/anbox-support
 sudo apt-get update
 sudo apt-get install -y anbox-modules-dkms
 snap install --beta --devmode anbox
+sudo modprobe ashmem_linux
+sudo modprobe binder_linux
 
 # clipboard history for gnome and derivatives
 sudo apt-get install -y libgpaste-dev
