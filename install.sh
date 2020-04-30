@@ -49,6 +49,10 @@ sudo apt-get install -y anbox-modules-dkms
 snap install --beta --devmode anbox
 sudo modprobe ashmem_linux
 sudo modprobe binder_linux
+sudo apt-get install -y lzip
+wget https://raw.githubusercontent.com/geeks-r-us/anbox-playstore-installer/master/install-playstore.sh
+chmod +x install-playstore.sh
+sudo /snap/anbox/current/bin/anbox-bridge.sh restart
 
 # clipboard history for gnome and derivatives
 sudo apt-get install -y libgpaste-dev
